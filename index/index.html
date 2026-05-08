@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users</title>
+</head>
+<body>
+
+    {% for user in users %}
+
+        <a href="{% url 'user_detail' slug=user.slug %}">{{ user.first_name }} {{ user.last_name }}</a>
+        <p>{{ user.age }}</p>
+        <a href="{% url 'user_update' slug=user.slug %}">Edit</a>
+        <a href="{% url 'user_delete' id=user.id %}">Delete</a>
+        <hr>
+
+    {% endfor %}
+<a href="{% url 'user_create' %}">Create User</a>
+</body>
+</html>
