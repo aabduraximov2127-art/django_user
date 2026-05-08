@@ -6,18 +6,51 @@
     <title>Users</title>
 </head>
 <body>
+<div class="div1"><a href="{% url 'user_create' %}">Create User</a></div>
 
     {% for user in users %}
 
-        <a href="{% url 'user_detail' slug=user.slug %}"><i>{{ user.first_name }} {{ user.last_name }}</i></a>
+    <div class="div3"><a href="{% url 'user_detail' slug=user.slug %}"><i>{{ user.first_name }} {{ user.last_name }}</i></a></div>
         
         
         <p>{{ user.age }}</p>
-        <a href="{% url 'user_update' slug=user.slug %}"><mark><b><i>Update</i></b></mark></a><br>
-        <a href="{% url 'user_delete' id=user.id %}"><mark><b><i>Delete</i></b></mark></a>
+<div class="div2"><a href="{% url 'user_update' slug=user.slug %}"><mark><b><i>Update</i></b></mark></a><br>
+        <a href="{% url 'user_delete' id=user.id %}"><mark><b><i>Delete</i></b></mark></a></div>
         <hr>
         
     {% endfor %}
-<a href="{% url 'user_create' %}">Create User</a>
+
+<style>
+    
+    body{
+        background-color: aqua;
+    }
+    .div1{
+        text-align: center;
+        border-radius: 60px;
+        background-color: gold;
+        width: 100px;
+        height: 50px;
+        margin: 0 auto;
+        line-height: 50px;
+        
+    }
+    .div2{
+        display: flex;
+        gap: 10px;
+    }
+    
+    .div3{
+        font-size: 20px;
+        font-weight: bold;
+        background-color: white;
+            width: 200px;
+            height: 50px;
+            line-height: 50px;
+            border-radius: 60px;
+            text-align: center;
+        color:black
+    }
+</style>
 </body>
 </html>

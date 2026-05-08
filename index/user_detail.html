@@ -6,21 +6,64 @@
     <title>User info</title>
 </head>
 <body>
-    <h1>{{ user.first_name }} {{ user.last_name }} Ma'lumotlari</h1>
+    <div class="div6">    <h1>{{ user.first_name }} {{ user.last_name }} Ma'lumotlari</h1>
     <p>{{ user.first_name }} {{ user.last_name }}</p>
     <p>{{ user.age }}</p>
     <p>{{ user.email }}</p>
-    <p>{{ user.phon }}</p>
-    {% if not user.avatar %}
+    <p>{{ user.phon }}</p></div>
+<div class="div6"></div>
+<div class="div5">{% if not user.avatar %}
         <p>Rasm mavjud emas</p>
     {% else %}
         <img src="{{ user.avatar.url }}" alt="Avatar" width="200">
-    
-    
-    {% endif %}
+    {% endif %}</div>
     <br><hr>
-    <a href="{% url 'user_update' slug=user.slug %}">update</a><br><hr>
+<div class="div4"><a href="{% url 'user_update' slug=user.slug %}">update</a><br><hr>
     <a href="{% url 'user_delete' id=user.id %}">Yoq qvorish</a><br><hr>
-    <a href="{% url 'user_view' %}">Orqaga qaytish</a><br>
+    <a href="{% url 'user_view' %}">Orqaga qaytish</a><br></div>
+    
+    <style>
+        body{
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        h1{
+            color: #333;
+        }
+        p{
+            font-size: 18px;
+            color: #555;
+        }
+        a{
+            display: inline-block;
+            margin-top: 10px;
+            text-decoration: none;
+            color: #007BFF;
+        }
+         a:hover {
+            text-decoration: underline;
+        }
+        .div4{
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+            .div5{
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 5px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                margin-bottom: 20px;
+            }
+            
+    .div6{
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    </style>
 </body>
 </html>
