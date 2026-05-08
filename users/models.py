@@ -14,7 +14,7 @@ class CustomUserManager(BaseUserManager):
 
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
-        user.save(using=self._db)
+        user.save() 
 
         return user
 
@@ -30,16 +30,15 @@ class ControlUsers(AbstractUser):
 
     username = None
 
-    email = models.EmailField(unique=True)
-    phon = models.CharField(max_length=20, blank=True)
-    avatar = models.ImageField(upload_to="images/", blank=True, null=True)
+    email=models.EmailField(unique=True)
+    phon=models.CharField(max_length=20, blank=True)
+    avatar=models.ImageField(upload_to="images/", blank=True, null=True)
+    slug=models.SlugField(unique=True, blank=True)
 
-    slug = models.SlugField(unique=True, blank=True)
+    USERNAME_FIELD="email"
+    REQUIRED_FIELDS=["first_name", "last_name"]
 
-    USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ["first_name", "last_name"]
-
-    objects = CustomUserManager()
+    objects=CustomUserManager()
 
     def save(self, *args, **kwargs):
 
