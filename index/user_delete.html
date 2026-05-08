@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Delete</title>
 </head>
 <body>
     <h1>Delete User</h1>
-    <p>siz rostan ham shu foydalanuvchini o'chirmoqchimisiz? {{user.first_name}} {{user.last_name}}</p>
+    <h2><mark>Siz rostan ham shu foydalanuvchini o'chirmoqchimisiz? <b><i>{{user.first_name}} {{user.last_name}}</i></b></mark></h2>
     <form method="post">
         {% csrf_token %}
-        <button type="submit">delete</button>
-        <a href="{% url 'user_view' %}">Cancel</a>
+        <button type="submit">delete</button><br><hr>
+        <a href="{% url 'user_view' %}">Bekor qilish</a>
     </form> 
 </body>
 </html>

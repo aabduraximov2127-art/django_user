@@ -3,7 +3,7 @@ from . import models
 class UserForm(forms.ModelForm):
     class Meta:
         model=models.ControlUsers
-        fields = ['first_name', 'last_name', 'email', 'phon']
+        fields = ['first_name', 'last_name', 'email', 'phon','avatar']
         
 
     

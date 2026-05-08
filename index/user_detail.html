@@ -3,12 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>User info</title>
 </head>
 <body>
-    <h1>User Ma'lumotlari</h1>
+    <h1>{{ user.first_name }} {{ user.last_name }} Ma'lumotlari</h1>
     <p>{{ user.first_name }} {{ user.last_name }}</p>
+    <p>{{ user.age }}</p>
     <p>{{ user.email }}</p>
     <p>{{ user.phon }}</p>
+    {% if not user.avatar %}
+        <p>Rasm mavjud emas</p>
+    {% else %}
+        <img src="{{ user.avatar.url }}" alt="Avatar" width="200">
+    
+    
+    {% endif %}
+    <br><hr>
+    <a href="{% url 'user_update' slug=user.slug %}">update</a><br><hr>
+    <a href="{% url 'user_delete' id=user.id %}">Yoq qvorish</a><br><hr>
+    <a href="{% url 'user_view' %}">Orqaga qaytish</a><br>
 </body>
 </html>
