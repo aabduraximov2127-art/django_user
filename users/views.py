@@ -1,12 +1,39 @@
 from django.shortcuts import render,redirect, get_object_or_404
 from django.contrib.auth import get_user_model
 from . import forms
+from unidecode import unidecode
 # Create your views here.
 User=get_user_model()
 
+
+
+def normalize(text):
+    if text:
+        return unidecode(text).lower()
+    return ""
+
 def user_view(request):
-    users=User.objects.all()
-    return render(request,"index.html",{"users":users})
+    query = request.GET.get('q')
+
+    users = User.objects.all()
+
+    if query:
+        query_norm = normalize(query)
+
+        filtered_users = []
+
+        for user in users:
+            name = normalize(user.first_name)
+
+            if query_norm in name:
+                filtered_users.append(user)
+
+        users = filtered_users
+
+    return render(request, "index.html", {
+        "users": users,
+        "query": query
+    })
 
 def user_delete(request, id):
     user=get_object_or_404(User, id=id)

@@ -4,72 +4,197 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User info</title>
-</head>
-<body>
-    <div class="div6">    <h1>{{ user.first_name }} {{ user.last_name }} Ma'lumotlari</h1>
-    <p>Ism va Familiya: {{ user.first_name }} {{ user.last_name }}</p>
-    <p>Yoshi: {{ user.age }}</p>
-    <p>Email: {{ user.email }}</p>
-    <p>Telefon: {{ user.phone }}</p></div>
-<div class="div6"></div>
-<div class="div5">{% if not user.avatar %}
-        <p>Rasm mavjud emas</p>
-    {% else %}
-        <img src="{{ user.avatar.url }}" alt="Avatar" width="200">
-    {% endif %}</div>
-    <br><hr>
-<div class="div4"><a href="{% url 'user_update' slug=user.slug %}">update</a><br><hr>
-    <a href="{% url 'user_delete' id=user.id %}">Yoq qvorish</a><br><hr>
-    <a href="{% url 'user_view' %}">Orqaga qaytish</a><br></div>
-    
-    <style>
-        body{
-            background-color: #f0f0f0;
-            font-family: Arial, sans-serif;
-            padding: 20px;
-        }
-        h1{
-            color: #333;
-        }
-        p{
-            font-size: 18px;
-            color: #555;
-        }
-        a{
-            display: inline-block;
-            margin-top: 10px;
-            text-decoration: none;
-            color: #007BFF;
-        }
-         a:hover {
-            text-decoration: underline;
-        }
-        .div4{
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            text-align: center ;
-            border-right: 5px solid #007BFF;
-            border-left: 5px solid #007BFF;
-            
-            
-            
-        }
-            .div5{
-                background-color: #fff;
-                padding: 20px;
-                border-radius: 5px;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-                margin-bottom: 20px;
-            }
-            
-    .div6{
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 5px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
     }
-    </style>
+
+    body{
+        background: linear-gradient(135deg, #000000, #1a1a1a);
+        font-family: Arial, sans-serif;
+        padding: 30px;
+        min-height: 100vh;
+
+        /* animation */
+        animation: fadeIn 0.8s ease;
+    }
+
+    @keyframes fadeIn{
+        from{
+            opacity: 0;
+            transform: translateX(80px);
+        }
+        to{
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    .container{
+        max-width: 800px;
+        margin: auto;
+    }
+
+    .div6,
+    .div5,
+    .div4{
+        background: white;
+        padding: 25px;
+        border-radius: 15px;
+        margin-bottom: 20px;
+
+        box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+
+        transition: 0.4s ease;
+    }
+
+    .div6:hover,
+    .div5:hover,
+    .div4:hover{
+        transform: translateY(-5px);
+    }
+
+    h1{
+        color: #111;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    p{
+        font-size: 18px;
+        color: #444;
+        margin-bottom: 10px;
+    }
+
+    .div5{
+        text-align: center;
+    }
+
+    .div5 img{
+        width: 220px;
+        height: 220px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 5px solid #007BFF;
+
+        transition: 0.5s ease;
+    }
+
+    .div5 img:hover{
+        transform: scale(1.05) rotate(2deg);
+    }
+
+    .div4{
+        text-align: center;
+    }
+
+    .div4 a{
+        display: inline-block;
+        margin: 10px;
+        padding: 12px 25px;
+
+        background: #007BFF;
+        color: white;
+        text-decoration: none;
+
+        border-radius: 10px;
+
+        transition: 0.3s ease;
+    }
+
+    .div4 a:hover{
+        background: hotpink;
+        transform: scale(1.05);
+    }
+
+    hr{
+        margin: 15px 0;
+        border: none;
+    }
+
+    /* page exit animation */
+    body.fade-out{
+        opacity: 0;
+        transform: translateX(-100px);
+        transition: all 0.6s ease;
+    }
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="div6">
+        <h1>{{ user.first_name }} {{ user.last_name }} Ma'lumotlari</h1>
+
+        <p><b>Ism va Familiya:</b> {{ user.first_name }} {{ user.last_name }}</p>
+
+        <p><b>Yoshi:</b> {{ user.age }}</p>
+
+        <p><b>Email:</b> {{ user.email }}</p>
+
+        <p><b>Telefon:</b> {{ user.phon }}</p>
+    </div>
+
+    <div class="div5">
+
+        {% if not user.avatar %}
+            <p>Rasm mavjud emas</p>
+
+        {% else %}
+
+            <img src="{{ user.avatar.url }}" alt="Avatar">
+
+        {% endif %}
+
+    </div>
+
+    <div class="div4">
+
+        <a class="page-link" href="{% url 'user_update' slug=user.slug %}">
+            Update
+        </a>
+
+        <a class="page-link" href="{% url 'user_delete' id=user.id %}">
+            Delete
+        </a>
+
+        <a class="page-link" href="{% url 'user_view' %}">
+            Orqaga
+        </a>
+
+    </div>
+
+</div>
+
+<script>
+
+    const links = document.querySelectorAll(".page-link");
+
+    links.forEach(link => {
+
+        link.addEventListener("click", function(e){
+
+            e.preventDefault();
+
+            const href = this.getAttribute("href");
+
+            document.body.classList.add("fade-out");
+
+            setTimeout(() => {
+                window.location.href = href;
+            }, 600);
+
+        });
+
+    });
+
+</script>
+
 </body>
 </html>

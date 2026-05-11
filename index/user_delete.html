@@ -1,71 +1,255 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Delete</title>
-</head>
-<body>
-    <div class="delete"><h1>Delete User</h1>
-    <h2><mark>Siz rostan ham shu foydalanuvchini o'chirmoqchimisiz? <a href="{% url 'user_detail' slug=user.slug %}"><b><i>{{user.first_name}} {{user.last_name}}</i></b></a></mark></h2>
-    <form method="post">
-        {% csrf_token %}
-    </div>
-        <hr>
-    <div class="buttons"><button type="submit">delete</button><br><hr>
-        <a href="{% url 'user_view' %}">Bekor qilish</a></div>
-    </form> 
-    <style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Delete User</title>
+
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
     body{
-        background-color: #f0f0f0;
         font-family: Arial, sans-serif;
+        min-height: 100vh;
+
+        background: linear-gradient(135deg, #000000, #1a1a1a);
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        animation: fadeIn 0.6s ease;
+    }
+
+    @keyframes fadeIn{
+        from{
+            opacity: 0;
+            transform: scale(0.95);
+        }
+        to{
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    /* BLUR EFFECT */
+    .blur{
+        filter: blur(5px);
+        pointer-events: none;
+    }
+
+    /* CARD */
+    .card{
+        background: white;
+        padding: 30px;
+        width: 450px;
+
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+
         text-align: center;
-        padding: 50px;
+
+        transition: 0.3s ease;
     }
-    h1 {
-        color: #333;
+
+    .card:hover{
+        transform: translateY(-5px);
     }
-    h2 {
-        color: #555;
+
+    h1{
+        color: #e60000;
+        margin-bottom: 15px;
     }
-    button {
-        background-color: #ff4d4d;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        font-size: 16px;
-        cursor: pointer;
-        margin-top: 20px;
+
+    h2{
+        font-size: 18px;
+        color: #444;
+        margin-bottom: 20px;
     }
-    button:hover {
-        background-color: #ff1a1a;
-    }
-    a {
-        display: inline-block;
-        margin-top: 20px;
-        color: #007bff;
+
+    .user-link{
+        color: #007BFF;
         text-decoration: none;
+        font-weight: bold;
     }
-    a:hover {
+
+    .user-link:hover{
         text-decoration: underline;
     }
-    .delete {
-        background-color: #fff;
-        padding: 30px;
-        border-radius: 50px;
-        border: 5px solid yellow;
-        box-shadow: 0 5px 4px rgba(0, 0, 0, 0.1);
-        display: inline-block;
+
+    .buttons{
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+        gap: 10px;
     }
-    .buttons {
-        margin-top: auto;
-        background-color: #fff;
-        border-radius: 30px;
-        border: 5px solid yellow;
-        padding: 20px;
-        box-shadow: 0 5px 4px rgba(0, 0, 0, 0.1);
-        display: inline-block;
+
+    button, a.cancel-btn{
+        flex: 1;
+        padding: 12px;
+        border: none;
+        border-radius: 10px;
+
+        font-size: 16px;
+        cursor: pointer;
+        transition: 0.3s ease;
+
+        text-align: center;
+        text-decoration: none;
     }
-    </style>
+
+    .delete-btn{
+        background: #ff2e2e;
+        color: white;
+    }
+
+    .delete-btn:hover{
+        background: #ff0000;
+        transform: scale(1.05);
+    }
+
+    .cancel-btn{
+        background: #007BFF;
+        color: white;
+    }
+
+    .cancel-btn:hover{
+        background: hotpink;
+        transform: scale(1.05);
+    }
+
+    /* MODAL */
+    .modal{
+        position: fixed;
+        top: 0;
+        left: 0;
+
+        width: 100%;
+        height: 100%;
+
+        background: rgba(0,0,0,0.7);
+
+        display: none;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal-box{
+        background: white;
+        padding: 25px;
+        border-radius: 15px;
+        text-align: center;
+
+        width: 320px;
+
+        animation: pop 0.3s ease;
+    }
+
+    @keyframes pop{
+        from{
+            transform: scale(0.6);
+            opacity: 0;
+        }
+        to{
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+
+    .modal-box h3{
+        color: #e60000;
+        margin-bottom: 10px;
+    }
+
+    .modal-box p{
+        margin-bottom: 20px;
+        color: #444;
+    }
+
+    .modal-btns{
+        display: flex;
+        gap: 10px;
+    }
+
+</style>
+</head>
+
+<body>
+
+<!-- MAIN CARD -->
+<div class="card" id="page">
+
+    <h1>⚠ Delete User</h1>
+
+    <h2>
+        Siz rostan ham shu foydalanuvchini o‘chirmoqchimisiz?
+        <br><br>
+
+        <a class="user-link" href="{% url 'user_detail' slug=user.slug %}">
+            {{ user.first_name }} {{ user.last_name }}
+        </a>
+    </h2>
+
+    <button class="delete-btn" onclick="openModal()">
+        Delete
+    </button>
+
+    <a href="{% url 'user_view' %}" class="cancel-btn">
+        Cancel
+    </a>
+
+</div>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+
+    <div class="modal-box">
+
+        <h3>⚠ Ogohlantirish</h3>
+        <p>Bu user butunlay o‘chiriladi. Davom etasizmi?</p>
+
+        <form method="post" id="deleteForm">
+            {% csrf_token %}
+
+            <div class="modal-btns">
+
+                <button type="button" class="cancel-btn" onclick="closeModal()">
+                    Cancel
+                </button>
+
+                <button type="submit" class="delete-btn">
+                    Yes, Delete
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<script>
+
+function openModal(){
+    document.getElementById("modal").style.display = "flex";
+    document.getElementById("page").classList.add("blur");
+}
+
+function closeModal(){
+    document.getElementById("modal").style.display = "none";
+    document.getElementById("page").classList.remove("blur");
+}
+
+document.getElementById("deleteForm").addEventListener("submit", function(){
+    document.body.classList.add("fade-out");
+});
+
+</script>
+
 </body>
 </html>

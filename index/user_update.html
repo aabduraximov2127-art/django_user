@@ -1,82 +1,128 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>update</title>
-</head>
-<body>
-    <h1>Update User</h1>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Yangilash</button>
-    </form>
-    <style>
-        body{
-            background-color: #f0f0f0;
-            font-family: Arial, sans-serif;
-            padding: 20px;
-        }
-        h1{
-            color: #333;
-        }
-        form{
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            max-width: 400px;
-            margin: 0 auto;
-        }
-        button{ 
-            background-color: #007BFF;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-        }   
-        button:hover {
-            background-color: #0056b3;
-        }
-            a{
-                display: inline-block;
-                margin-top: 10px;
-                text-decoration: none;
-                color: #007BFF;
-            }
-            a:hover {
-                text-decoration: underline;
-            }
-            .div4{
-                background-color: #fff;
-                padding: 20px;
-                border-radius: 5px;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-                text-align: center ;
-                border-right: 5px solid #007BFF;
-                border-left: 5px solid #007BFF;
-            }
-            .div5{
-                background-color: #fff;
-                padding: 20px;
-                border-radius: 5px;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-                text-align: center ;
-                border-right: 5px solid #007BFF;
-                border-left: 5px solid #007BFF;
-            }
-    .div6{
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 5px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        text-align: center ;
-        border-right: 5px solid #007BFF;
-        border-left: 5px solid #007BFF;
+<meta charset="UTF-8">
+<title>Update</title>
+
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: system-ui;
     }
 
-    </style>
+    body{
+        background: #0f0f0f;
+        min-height: 100vh;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .box{
+        width: 380px;
+        background: #1c1c1c;
+        padding: 25px;
+
+        border-radius: 14px;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+    }
+
+    .field{
+        margin-bottom: 14px;
+    }
+
+    label{
+        display: block;
+        margin-bottom: 5px;
+        color: #bbb;
+        font-size: 13px;
+    }
+
+    input, select, textarea{
+        width: 100%;
+        padding: 12px;
+
+        background: #111;
+        border: 1px solid #333;
+        border-radius: 10px;
+
+        color: white;
+        outline: none;
+    }
+
+    input:focus{
+        border-color: #00aaff;
+        box-shadow: 0 0 10px rgba(0,170,255,0.3);
+    }
+
+    button{
+        width: 100%;
+        padding: 12px;
+
+        border: none;
+        border-radius: 10px;
+
+        background: #00aaff;
+        color: white;
+        font-weight: bold;
+
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    button:hover{
+        background: hotpink;
+        transform: scale(1.03);
+    }
+
+</style>
+</head>
+
+<body>
+
+<div class="box">
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="field">
+            <label>Ism</label>
+            {{ form.first_name }}
+        </div>
+
+        <div class="field">
+            <label>Familiya</label>
+            {{ form.last_name }}
+        </div>
+
+        <div class="field">
+            <label>Yosh</label>
+            {{ form.age }}
+        </div>
+
+        <div class="field">
+            <label>Email</label>
+            {{ form.email }}
+        </div>
+
+        <div class="field">
+            <label>Telefon</label>
+            {{ form.phon }}
+        </div>
+
+        <div class="field">
+            <label>Avatar</label>
+            {{ form.avatar }}
+        </div>
+
+        <button type="submit">Saqlash</button>
+
+    </form>
+
+</div>
+
 </body>
 </html>
