@@ -28,8 +28,8 @@ class CustomUserManager(BaseUserManager):
 
 class ControlUsers(AbstractUser):
 
-    username = None
-
+    username=None
+    age=models.PositiveIntegerField(blank=True, null=True)
     email=models.EmailField(unique=True)
     phon=models.CharField(max_length=20, blank=True)
     avatar=models.ImageField(upload_to="images/", blank=True, null=True)

@@ -6,12 +6,66 @@
     <title>Delete</title>
 </head>
 <body>
-    <h1>Delete User</h1>
-    <h2><mark>Siz rostan ham shu foydalanuvchini o'chirmoqchimisiz? <b><i>{{user.first_name}} {{user.last_name}}</i></b></mark></h2>
+    <div class="delete"><h1>Delete User</h1>
+    <h2><mark>Siz rostan ham shu foydalanuvchini o'chirmoqchimisiz? <a href="{% url 'user_detail' slug=user.slug %}"><b><i>{{user.first_name}} {{user.last_name}}</i></b></a></mark></h2>
     <form method="post">
         {% csrf_token %}
-        <button type="submit">delete</button><br><hr>
-        <a href="{% url 'user_view' %}">Bekor qilish</a>
+    </div>
+        <hr>
+    <div class="buttons"><button type="submit">delete</button><br><hr>
+        <a href="{% url 'user_view' %}">Bekor qilish</a></div>
     </form> 
+    <style>
+    body{
+        background-color: #f0f0f0;
+        font-family: Arial, sans-serif;
+        text-align: center;
+        padding: 50px;
+    }
+    h1 {
+        color: #333;
+    }
+    h2 {
+        color: #555;
+    }
+    button {
+        background-color: #ff4d4d;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        margin-top: 20px;
+    }
+    button:hover {
+        background-color: #ff1a1a;
+    }
+    a {
+        display: inline-block;
+        margin-top: 20px;
+        color: #007bff;
+        text-decoration: none;
+    }
+    a:hover {
+        text-decoration: underline;
+    }
+    .delete {
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 50px;
+        border: 5px solid yellow;
+        box-shadow: 0 5px 4px rgba(0, 0, 0, 0.1);
+        display: inline-block;
+    }
+    .buttons {
+        margin-top: auto;
+        background-color: #fff;
+        border-radius: 30px;
+        border: 5px solid yellow;
+        padding: 20px;
+        box-shadow: 0 5px 4px rgba(0, 0, 0, 0.1);
+        display: inline-block;
+    }
+    </style>
 </body>
 </html>

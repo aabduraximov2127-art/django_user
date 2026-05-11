@@ -7,10 +7,10 @@
 </head>
 <body>
     <div class="div6">    <h1>{{ user.first_name }} {{ user.last_name }} Ma'lumotlari</h1>
-    <p>{{ user.first_name }} {{ user.last_name }}</p>
-    <p>{{ user.age }}</p>
-    <p>{{ user.email }}</p>
-    <p>{{ user.phon }}</p></div>
+    <p>Ism va Familiya: {{ user.first_name }} {{ user.last_name }}</p>
+    <p>Yoshi: {{ user.age }}</p>
+    <p>Email: {{ user.email }}</p>
+    <p>Telefon: {{ user.phone }}</p></div>
 <div class="div6"></div>
 <div class="div5">{% if not user.avatar %}
         <p>Rasm mavjud emas</p>
