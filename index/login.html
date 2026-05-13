@@ -1,139 +1,688 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uz">
 <head>
 <meta charset="UTF-8">
-<title>Login</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Saytimizga</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
+
 *{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial;
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
 }
 
 body{
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: radial-gradient(circle, #1f2937, #0f172a);
-    color: white;
+  width:100%;
+  height:100vh;
+  overflow:hidden;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  position:relative;
+  background:#040816;
 }
 
-.box{
-    width: 350px;
-    padding: 30px;
-    border-radius: 20px;
-    background: rgba(255,255,255,0.08);
-    backdrop-filter: blur(10px);
-    text-align: center;
+/* ========================= */
+/* BACKGROUND */
+/* ========================= */
+
+.background{
+  position:absolute;
+  inset:0;
+  overflow:hidden;
 }
 
-input{
-    width: 100%;
-    padding: 12px;
-    margin: 10px 0;
-    border-radius: 10px;
-    border: none;
-    outline: none;
+/* STARS */
+
+.stars{
+  position:absolute;
+  width:300%;
+  height:300%;
+
+  background:
+  radial-gradient(white 1px, transparent 1px);
+
+  background-size:55px 55px;
+
+  animation:starsMove 18s linear infinite;
+  opacity:.9;
 }
 
-.btn-area{
-    position: relative;
-    height: 60px;
-    margin-top: 15px;
+@keyframes starsMove{
+
+  from{
+    transform:
+    translate(0,0)
+    scale(1);
+  }
+
+  to{
+    transform:
+    translate(-650px,-650px)
+    scale(1.5);
+  }
+
 }
 
-#loginBtn{
-    position: absolute;
-    left: 0;
-    top: 0;
-    padding: 12px 25px;
-    border: none;
-    border-radius: 10px;
-    background: #111827;
-    color: white;
-    cursor: pointer;
-    transition: 0.08s;
+/* BLUE GLOW */
+
+.glow1{
+  position:absolute;
+  width:500px;
+  height:500px;
+  background:#2155ff;
+  border-radius:50%;
+  filter:blur(160px);
+  top:-120px;
+  left:-120px;
+  opacity:.4;
 }
+
+.glow2{
+  position:absolute;
+  width:450px;
+  height:450px;
+  background:#ff0055;
+  border-radius:50%;
+  filter:blur(170px);
+  bottom:-150px;
+  right:-100px;
+  opacity:.35;
+}
+
+/* ========================= */
+/* SPIDERMAN */
+/* ========================= */
+
+.spiderman{
+  position:absolute;
+  right:30px;
+  bottom:0;
+
+  width:470px;
+
+  object-fit:contain;
+
+  filter:
+  drop-shadow(0 0 40px rgba(255,0,0,.45));
+
+  animation:floatSpider 4s ease-in-out infinite;
+
+  user-select:none;
+  pointer-events:none;
+}
+
+@keyframes floatSpider{
+
+  0%{
+    transform:translateY(0px);
+  }
+
+  50%{
+    transform:translateY(-18px);
+  }
+
+  100%{
+    transform:translateY(0px);
+  }
+
+}
+
+/* ========================= */
+/* MAIN */
+/* ========================= */
+
+.wrapper{
+  position:relative;
+  z-index:2;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:28px;
+}
+
+/* LOGO */
+
+.logo{
+  font-size:60px;
+  font-weight:800;
+  color:white;
+  letter-spacing:3px;
+
+  text-shadow:
+  0 0 10px rgba(255,255,255,.8),
+  0 0 30px rgba(70,130,255,.7),
+  0 0 50px rgba(70,130,255,.5);
+}
+
+.logo span{
+  color:#4da3ff;
+}
+
+/* LOGIN BOX */
+
+.login-box{
+  width:530px;
+  padding:30px;
+
+  border-radius:34px;
+
+  background:rgba(255,255,255,0.08);
+
+  border:1px solid rgba(255,255,255,0.15);
+
+  backdrop-filter:blur(22px);
+
+  box-shadow:
+  0 0 50px rgba(255,255,255,.06),
+  inset 0 0 20px rgba(255,255,255,.03);
+}
+
+/* TOP */
+
+.top-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:28px;
+  color:#eee;
+  font-size:14px;
+}
+
+/* LANGUAGE */
+
+.lang{
+  position:relative;
+  background:white;
+  color:#111;
+  padding:10px 16px;
+  border-radius:16px;
+  font-weight:600;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  cursor:pointer;
+  user-select:none;
+  transition:.3s;
+}
+
+.lang:hover{
+  transform:scale(1.05);
+}
+
+.lang-menu{
+  position:absolute;
+  top:60px;
+  right:0;
+  width:190px;
+  background:white;
+  border-radius:16px;
+  overflow:hidden;
+  display:none;
+  box-shadow:0 15px 35px rgba(0,0,0,.35);
+}
+
+.lang-menu div{
+  padding:13px 16px;
+  color:#111;
+  transition:.2s;
+  cursor:pointer;
+}
+
+.lang-menu div:hover{
+  background:#f3f3f3;
+}
+
+/* TITLE */
+
+.title{
+  text-align:center;
+  margin-bottom:22px;
+}
+
+.title h2{
+  font-size:38px;
+  color:white;
+  margin-bottom:7px;
+  font-weight:700;
+}
+
+.title p{
+  color:#d8d8d8;
+  font-size:17px;
+}
+
+/* TABS */
+
+.tabs{
+  width:100%;
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.15);
+  border-radius:20px;
+  padding:5px;
+  display:flex;
+  margin-bottom:20px;
+}
+
+.tab{
+  flex:1;
+  border:none;
+  height:56px;
+  border-radius:16px;
+  background:transparent;
+  color:#ddd;
+  font-size:20px;
+  cursor:pointer;
+  font-weight:600;
+  transition:.3s;
+}
+
+.tab.active{
+  background:white;
+  color:#111b44;
+}
+
+/* INPUT */
+
+.input-box{
+  margin-bottom:17px;
+}
+
+.input-box input{
+  width:100%;
+  height:60px;
+  border:none;
+  outline:none;
+  border-radius:18px;
+  padding:0 20px;
+
+  background:rgba(255,255,255,.88);
+
+  font-size:18px;
+  color:#222;
+
+  transition:.3s;
+}
+
+.input-box input:focus{
+  transform:scale(1.02);
+  box-shadow:0 0 20px rgba(90,160,255,.35);
+}
+
+.input-box input::placeholder{
+  color:#777;
+}
+
+/* BUTTON */
+
+.login-btn{
+  width:100%;
+  height:62px;
+  border:none;
+  border-radius:20px;
+
+  background:
+  linear-gradient(
+    45deg,
+    #0066ff,
+    #00b7ff,
+    #4f7dff
+  );
+
+  color:white;
+  font-size:24px;
+  font-weight:700;
+  cursor:pointer;
+
+  margin-top:8px;
+
+  transition:.3s;
+
+  box-shadow:
+  0 10px 30px rgba(0,120,255,.35);
+}
+
+.login-btn:hover{
+  transform:translateY(-3px) scale(1.02);
+}
+
+.login-btn a{
+  text-decoration:none;
+  color:white;
+  width:100%;
+  height:100%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+/* FOOTER */
+
+.bottom-text{
+  margin-top:24px;
+  text-align:center;
+  color:#ddd;
+  font-size:17px;
+}
+
+.bottom-text a{
+  color:white;
+  text-decoration:none;
+  font-weight:700;
+  margin-left:6px;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:950px){
+
+  .spiderman{
+    width:300px;
+    right:-30px;
+    opacity:.8;
+  }
+
+}
+
+@media(max-width:600px){
+
+  .login-box{
+    width:92%;
+    padding:24px;
+  }
+
+  .logo{
+    font-size:42px;
+  }
+
+  .title h2{
+    font-size:29px;
+  }
+
+  .tab{
+    font-size:17px;
+  }
+
+  .spiderman{
+    width:190px;
+    opacity:.35;
+  }
+
+}
+
 </style>
 </head>
-
 <body>
 
-<div class="box">
+<!-- BACKGROUND -->
 
-    <h2>Login</h2>
+<div class="background">
 
-    <form method="POST">
-        {% csrf_token %}
+  <div class="stars"></div>
 
-        <input type="text" id="username" name="username" placeholder="Username">
-        <input type="password" id="password" name="password" placeholder="Password">
+  <div class="glow1"></div>
+  <div class="glow2"></div>
 
-        <div class="btn-area">
-            <button type="submit" id="loginBtn">Login</button>
+  <img
+    class="spiderman"
+    src="https://pngimg.com/d/spider_man_PNG90.png"
+    alt="Spiderman"
+  >
+
+</div>
+
+<!-- MAIN -->
+
+<div class="wrapper">
+
+  <div class="logo">
+    Cyber<span>Users</span>
+  </div>
+
+  <div class="login-box">
+
+    <!-- TOP -->
+
+    <div class="top-row">
+
+      <div>
+        🚀 Premium Login
+      </div>
+
+      <!-- LANGUAGE -->
+
+      <div class="lang" onclick="toggleLangMenu(event)">
+
+        🌐 <span id="currentLang">O'zb</span>
+
+        <div class="lang-menu" id="langMenu">
+
+          <div onclick="changeLang('uz')">
+            🇺🇿 Oʻzbekcha
+          </div>
+
+          <div onclick="changeLang('ru')">
+            🇷🇺 Русский
+          </div>
+
+          <div onclick="changeLang('en')">
+            🇺🇸 English
+          </div>
+
         </div>
-    </form>
-    
+
+      </div>
+
+    </div>
+
+    <!-- TITLE -->
+
+    <div class="title">
+
+      <h2 id="titleText">
+        Cyber xush kelibsiz
+      </h2>
+
+      <p id="subText">
+        Bugun nimani boshlaymiz?
+      </p>
+
+    </div>
+
+    <!-- TABS -->
+
+    <div class="tabs">
+
+      <button class="tab active" id="studentBtn">
+        Student
+      </button>
+        <button class="tab" id="parentBtn">
+            Parent
+        </button>
+
+    </div>
+
+    <!-- INPUT -->
+
+    <div class="input-box">
+      <input type="text" placeholder="Login yoki ID">
+    </div>
+
+    <div class="input-box">
+      <input
+        type="password"
+        id="passwordInput"
+        placeholder="Parol"
+      >
+    </div>
+
+    <!-- BUTTON -->
+
+    <button class="login-btn" id="loginBtn">
+
+      <a href="{% url 'user_list' %}">
+        Kirish
+      </a>
+
+    </button>
+
+    <!-- FOOTER -->
+
+    <div class="bottom-text">
+
+      <span id="accountText">
+        Akkaunt yo‘qmi?
+      </span>
+
+      <a
+        href="{% url 'register_view' %}"
+        id="registerText"
+      >
+        Ro‘yxatdan o‘tish
+      </a>
+
+    </div>
+
+  </div>
 
 </div>
 
 <script>
-const btn = document.getElementById("loginBtn");
-const username = document.getElementById("username");
-const password = document.getElementById("password");
-const area = document.querySelector(".btn-area");
 
-function empty(){
-    return username.value.trim() === "" || password.value.trim() === "";
+/* MENU */
+
+function toggleLangMenu(event){
+
+  event.stopPropagation();
+
+  const menu =
+    document.getElementById("langMenu");
+
+  menu.style.display =
+    menu.style.display === "block"
+    ? "none"
+    : "block";
 }
 
-// ⚡ REAL TIME ESCAPE
-area.addEventListener("mousemove", (e) => {
+/* TRANSLATIONS */
 
-    if (!empty()) return;
+const translations = {
 
-    const rect = btn.getBoundingClientRect();
+  uz: {
 
-    const dx = e.clientX - (rect.left + rect.width / 2);
-    const dy = e.clientY - (rect.top + rect.height / 2);
+    lang:"O'zb",
+    title:"Saytimizga xush kelibsiz",
+    sub:"Bugun nimani boshlaymiz?",
+    student:"Student",
+    parent:"Ota-ona",
+    password:"Parol",
+    login:"Kirish",
+    account:"Akkaunt yo‘qmi?",
+    register:"Ro‘yxatdan o‘tish"
 
-    const dist = Math.sqrt(dx*dx + dy*dy);
+  },
 
-    if (dist < 90) {
-        escapeButton();
-    }
+  ru: {
+
+    lang:"Рус",
+    title:"Добро пожаловать",
+    sub:"Что начнем сегодня?",
+    student:"Студент",
+    parent:"Родитель",
+    password:"Пароль",
+    login:"Войти",
+    account:"Нет аккаунта?",
+    register:"Регистрация"
+
+  },
+
+  en: {
+
+    lang:"Eng",
+    title:"Welcome",
+    sub:"What are we starting today?",
+    student:"Student",
+    parent:"Parent",
+    password:"Password",
+    login:"Login",
+    account:"No account?",
+    register:"Register"
+
+  }
+
+};
+
+/* CHANGE LANGUAGE */
+
+function changeLang(language){
+
+  const t = translations[language];
+
+  document.getElementById(
+    "currentLang"
+  ).innerText = t.lang;
+
+  document.getElementById(
+    "titleText"
+  ).innerText = t.title;
+
+  document.getElementById(
+    "subText"
+  ).innerText = t.sub;
+
+  document.getElementById(
+    "studentBtn"
+  ).innerText = t.student;
+
+  document.getElementById(
+    "parentBtn"
+  ).innerText = t.parent;
+
+  document.getElementById(
+    "passwordInput"
+  ).placeholder = t.password;
+
+  document.getElementById(
+    "loginBtn"
+  ).innerHTML =
+  `<a href="{% url 'user_list' %}">
+    ${t.login}
+  </a>`;
+
+  document.getElementById(
+    "accountText"
+  ).innerText = t.account;
+
+  document.getElementById(
+    "registerText"
+  ).innerText = t.register;
+
+  document.getElementById(
+    "langMenu"
+  ).style.display = "none";
+}
+
+/* CLOSE MENU */
+
+window.addEventListener("click", function(e){
+
+  if(!e.target.closest(".lang")){
+
+    document.getElementById(
+      "langMenu"
+    ).style.display = "none";
+
+  }
+
 });
 
-// ⚡ FAST ESCAPE FUNCTION
-function escapeButton(){
-    const maxX = area.clientWidth - btn.clientWidth;
-    const maxY = area.clientHeight - btn.clientHeight;
-
-    const x = Math.random() * maxX;
-    const y = Math.random() * maxY;
-
-    btn.style.transition = "0.05s";
-    btn.style.left = x + "px";
-    btn.style.top = y + "px";
-}
-
-// input check
-function check(){
-    if (!empty()){
-        btn.style.left = "0px";
-        btn.style.top = "0px";
-        btn.style.background = "green";
-        btn.style.transition = "0.3s";
-    } else {
-        btn.style.background = "#111827";
-    }
-}
-
-username.addEventListener("input", check);
-password.addEventListener("input", check);
 </script>
 
 </body>

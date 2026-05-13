@@ -13,6 +13,16 @@ User = get_user_model()
 
 def user_list(request):
     users = User.objects.all()
+    query = request.GET.get("q")
+    users = User.objects.all()
+
+    if query:
+        q = normalize(query)
+
+        users = [
+            u for u in users
+            if q in normalize(u.first_name)
+        ]
     return render(request, "index.html", {"users": users})
 
 def normalize(text):
@@ -24,21 +34,9 @@ def normalize(text):
 
 def home(request):
 
-    query = request.GET.get("q")
-    users = User.objects.all()
 
-    if query:
-        q = normalize(query)
 
-        users = [
-            u for u in users
-            if q in normalize(u.first_name)
-        ]
-
-    return render(request, "home.html", {
-        "users": users,
-        "query": query
-    })
+    return render(request, "home.html")
 
 
 
@@ -75,7 +73,7 @@ def user_update(request, slug):
 
         if form.is_valid():
             form.save()
-            return redirect("home")
+            return redirect("user_detail", slug=user.slug)
 
     else:
         form = UserForm(instance=user)
@@ -92,7 +90,7 @@ def user_delete(request, id):
 
     if request.method == "POST":
         user.delete()
-        return redirect("home")
+        return redirect("user_list")
 
     return render(request, "user_delete.html", {"user": user})
 
@@ -141,5 +139,3 @@ def logout_view(request):
     logout(request)
     return redirect("login")
 
-def profile(request):
-    return render(request, "profile.html")

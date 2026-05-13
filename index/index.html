@@ -1,220 +1,273 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uz">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Users</title>
+<title>Cyber Users</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
 <style>
 *{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
 }
 
 body{
-    min-height: 100vh;
-    background: radial-gradient(circle at top, #1f2937, #0f172a);
-    padding: 30px;
-    color: white;
+    min-height:100vh;
+    background:#070A12;
+    overflow-x:hidden;
+    color:white;
+    padding:30px;
 }
 
-/* NAV */
-.nav{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 25px;
-    animation: fadeDown 0.6s ease;
+/* ===== Animated background ===== */
+.bg{
+    position:fixed;
+    inset:0;
+    background:
+    radial-gradient(circle at 20% 20%, #6d28d9 0%, transparent 35%),
+    radial-gradient(circle at 80% 30%, #06b6d4 0%, transparent 40%),
+    radial-gradient(circle at 40% 80%, #f43f5e 0%, transparent 40%);
+    filter: blur(60px);
+    opacity:.5;
+    z-index:-2;
+    animation:moveBg 10s infinite alternate;
 }
 
-@keyframes fadeDown{
-    from{transform: translateY(-20px); opacity: 0;}
-    to{transform: translateY(0); opacity: 1;}
+@keyframes moveBg{
+    from{transform:scale(1) rotate(0deg);}
+    to{transform:scale(1.2) rotate(10deg);}
 }
 
-.nav a{
-    background: linear-gradient(45deg, #06b6d4, #3b82f6);
-    color: white;
-    padding: 10px 18px;
-    border-radius: 12px;
-    text-decoration: none;
-    transition: 0.3s;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+/* ===== HEADER ===== */
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:35px;
+    flex-wrap:wrap;
+    gap:20px;
 }
 
-.nav a:hover{
-    transform: scale(1.05);
-    box-shadow: 0 0 15px #06b6d4;
+.logo{
+    font-size:38px;
+    font-weight:800;
+    letter-spacing:1px;
 }
 
-.nav form{
-    display: flex;
-    gap: 10px;
+.logo span{
+    background:linear-gradient(45deg,#06b6d4,#8b5cf6,#f43f5e);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
 }
 
-.nav input{
-    padding: 10px 15px;
-    border-radius: 10px;
-    border: none;
-    outline: none;
-    width: 250px;
-    transition: 0.3s;
+/* BUTTON */
+.create-btn{
+    padding:12px 18px;
+    border-radius:14px;
+    text-decoration:none;
+    font-weight:600;
+    color:white;
+    background:linear-gradient(45deg,#6366f1,#06b6d4);
+    box-shadow:0 10px 30px rgba(99,102,241,.4);
+    transition:.3s;
 }
 
-.nav input:focus{
-    box-shadow: 0 0 10px #06b6d4;
+.create-btn:hover{
+    transform:translateY(-3px);
+    box-shadow:0 15px 40px rgba(6,182,212,.4);
 }
 
-.nav button{
-    padding: 10px 15px;
-    border: none;
-    border-radius: 10px;
-    background: #06b6d4;
-    color: white;
-    cursor: pointer;
-    transition: 0.3s;
+/* SEARCH */
+.search-box{
+    display:flex;
+    gap:10px;
 }
 
-.nav button:hover{
-    background: #0ea5e9;
+.search-box input{
+    width:250px;
+    height:45px;
+    border:none;
+    border-radius:12px;
+    padding:0 12px;
+    outline:none;
+    background:rgba(255,255,255,.9);
 }
 
-/* GRID */
+.search-box button{
+    border:none;
+    padding:0 16px;
+    border-radius:12px;
+    background:#22c55e;
+    color:white;
+    font-weight:600;
+    cursor:pointer;
+}
+
+/* ===== GRID ===== */
 .container{
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 18px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+    gap:22px;
 }
 
-/* CARD */
+/* ===== CARD ===== */
 .card{
-    background: rgba(255,255,255,0.08);
-    backdrop-filter: blur(10px);
-    border-radius: 18px;
-    padding: 15px;
-    text-align: center;
-    cursor: pointer;
-    transition: 0.3s;
-    position: relative;
-    overflow: hidden;
-    animation: pop 0.5s ease;
+    position:relative;
+    padding:22px;
+    border-radius:22px;
+    text-align:center;
+    cursor:pointer;
+
+    background:rgba(255,255,255,0.07);
+    border:1px solid rgba(255,255,255,0.15);
+    backdrop-filter:blur(18px);
+
+    transform-style:preserve-3d;
+    transition:.4s;
+    overflow:hidden;
 }
 
-@keyframes pop{
-    from{transform: scale(0.8); opacity: 0;}
-    to{transform: scale(1); opacity: 1;}
+/* glow line */
+.card::before{
+    content:'';
+    position:absolute;
+    width:120%;
+    height:120%;
+    top:-50%;
+    left:-50%;
+    background:linear-gradient(45deg,transparent,rgba(255,255,255,.2),transparent);
+    transform:rotate(25deg);
+    transition:.5s;
 }
 
+.card:hover::before{
+    left:100%;
+}
+
+/* hover float */
 .card:hover{
-    transform: translateY(-10px) scale(1.02);
-    box-shadow: 0 0 20px rgba(6,182,212,0.6);
-}
-
-/* ripple effect */
-.card::after{
-    content: "";
-    position: absolute;
-    width: 0;
-    height: 0;
-    background: rgba(255,255,255,0.2);
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    top: 50%;
-    left: 50%;
-    transition: width 0.4s, height 0.4s;
-}
-
-.card:active::after{
-    width: 200px;
-    height: 200px;
+    transform:translateY(-10px) rotateX(8deg);
+    box-shadow:0 20px 50px rgba(0,0,0,.4);
 }
 
 /* AVATAR */
 .avatar{
-    width: 70px;
-    height: 70px;
-    margin: auto;
-    border-radius: 50%;
-    overflow: hidden;
-    border: 2px solid #06b6d4;
+    width:85px;
+    height:85px;
+    margin:auto;
+    border-radius:50%;
+    overflow:hidden;
+    border:2px solid #06b6d4;
+    box-shadow:0 0 25px rgba(6,182,212,.4);
 }
 
 .avatar img{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    width:100%;
+    height:100%;
+    object-fit:cover;
 }
 
 /* NAME */
 .name{
-    margin-top: 10px;
-    font-weight: bold;
-    font-size: 15px;
+    margin-top:14px;
+    font-size:18px;
+    font-weight:700;
 }
 
 /* ACTIONS */
 .actions{
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    margin-top: 10px;
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    margin-top:15px;
 }
 
 .actions a{
-    font-size: 12px;
-    padding: 6px 10px;
-    border-radius: 8px;
-    text-decoration: none;
-    color: white;
-    transition: 0.3s;
+    padding:8px 12px;
+    border-radius:10px;
+    text-decoration:none;
+    font-size:13px;
+    font-weight:600;
+    color:white;
+    transition:.3s;
 }
 
 .update{
-    background: #3b82f6;
+    background:linear-gradient(45deg,#3b82f6,#06b6d4);
 }
 
 .delete{
-    background: #ef4444;
+    background:linear-gradient(45deg,#ef4444,#f97316);
 }
 
 .actions a:hover{
-    transform: scale(1.1);
+    transform:scale(1.1);
 }
 
 /* EMPTY */
 .empty{
-    text-align: center;
-    margin-top: 40px;
-    font-size: 20px;
-    opacity: 0.7;
+    text-align:center;
+    margin-top:60px;
+    font-size:22px;
+    opacity:.7;
+}
+
+/* RESPONSIVE */
+@media(max-width:700px){
+    body{padding:18px;}
+
+    .header{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .search-box{
+        width:100%;
+    }
+
+    .search-box input{
+        width:100%;
+    }
 }
 </style>
 </head>
 
 <body>
 
-<div class="nav">
+<div class="bg"></div>
 
-    <a href="{% url 'user_create' %}">
-        + Create User
-    </a>
+<!-- HEADER -->
+<div class="header">
 
-    <form method="GET">
-        <input type="text" name="q" placeholder="Ism yozing..." value="{{ query }}">
-        <button type="submit">Search</button>
-    </form>
+    <div class="logo">
+        Cyber<span>Users</span>
+    </div>
+
+    <div class="nav">
+
+        <a href="{% url 'user_create' %}" class="create-btn">
+            + Create
+        </a>
+
+        <form class="search-box" method="GET">
+            <input type="text" name="q" placeholder="Search user..." value="{{ query }}">
+            <button type="submit">Go</button>
+        </form>
+
+    </div>
 
 </div>
 
+<!-- USERS -->
 <div class="container">
 
 {% for user in users %}
 
-<div class="card user-card"
-     data-url="{% url 'user_detail' slug=user.slug %}">
+<div class="card user-card" data-url="{% url 'user_detail' slug=user.slug %}">
 
     <div class="avatar">
         {% if user.avatar %}
@@ -229,28 +282,21 @@ body{
     </div>
 
     <div class="actions">
-        <a href="{% url 'user_update' slug=user.slug %}" class="update"
-           onclick="event.stopPropagation()">
-            Update
-        </a>
-
-        <a href="{% url 'user_delete' id=user.id %}" class="delete"
-           onclick="event.stopPropagation()">
-            Delete
-        </a>
+        <a href="{% url 'user_update' slug=user.slug %}" class="update" onclick="event.stopPropagation()">Edit</a>
+        <a href="{% url 'user_delete' id=user.id %}" class="delete" onclick="event.stopPropagation()">Del</a>
     </div>
 
 </div>
 
 {% empty %}
-    <h1 class="empty">User topilmadi</h1>
+<div class="empty">No users found</div>
 {% endfor %}
 
 </div>
 
 <script>
-document.querySelectorAll(".user-card").forEach(card => {
-    card.addEventListener("click", () => {
+document.querySelectorAll(".user-card").forEach(card=>{
+    card.addEventListener("click",()=>{
         window.location.href = card.dataset.url;
     });
 });

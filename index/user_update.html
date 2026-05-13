@@ -2,125 +2,329 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Update</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ultra Update Panel</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
-    *{
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: system-ui;
+
+/* =========================
+RESET
+========================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:#05060a;
+    overflow-x:hidden;
+    color:white;
+}
+
+/* =========================
+BACKGROUND SYSTEM (ADVANCED)
+========================= */
+
+.bg-grid{
+    position:fixed;
+    inset:0;
+    background:
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size:60px 60px;
+    z-index:-3;
+}
+
+.blob{
+    position:fixed;
+    width:500px;
+    height:500px;
+    filter:blur(120px);
+    opacity:.6;
+    z-index:-2;
+    animation:float 8s infinite ease-in-out;
+}
+
+.blob.one{
+    background:#4f46e5;
+    top:-150px;
+    left:-120px;
+}
+
+.blob.two{
+    background:#06b6d4;
+    bottom:-200px;
+    right:-150px;
+}
+
+.blob.three{
+    background:#f43f5e;
+    top:40%;
+    left:30%;
+}
+
+@keyframes float{
+    0%{transform:translateY(0) scale(1);}
+    50%{transform:translateY(-30px) scale(1.1);}
+    100%{transform:translateY(0) scale(1);}
+}
+
+/* =========================
+MAIN LAYOUT
+========================= */
+
+.wrapper{
+    display:grid;
+    grid-template-columns:1fr 2fr;
+    gap:30px;
+    padding:40px;
+}
+
+/* =========================
+LEFT PANEL (INFO CARD)
+========================= */
+
+.side{
+    background:rgba(255,255,255,0.06);
+    border:1px solid rgba(255,255,255,0.1);
+    border-radius:24px;
+    padding:25px;
+    backdrop-filter:blur(20px);
+    height:fit-content;
+}
+
+.side h1{
+    font-size:22px;
+    margin-bottom:15px;
+}
+
+.side p{
+    font-size:13px;
+    opacity:.7;
+    line-height:1.5;
+}
+
+.avatar-preview{
+    width:120px;
+    height:120px;
+    border-radius:50%;
+    overflow:hidden;
+    margin:20px auto;
+    border:2px solid #06b6d4;
+    box-shadow:0 0 25px rgba(6,182,212,.4);
+}
+
+.avatar-preview img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+/* =========================
+FORM PANEL
+========================= */
+
+.form-box{
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.1);
+    border-radius:24px;
+    padding:30px;
+    backdrop-filter:blur(25px);
+}
+
+.title{
+    font-size:26px;
+    font-weight:800;
+    margin-bottom:20px;
+}
+
+/* =========================
+INPUT GRID
+========================= */
+
+.grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+}
+
+.field{
+    position:relative;
+}
+
+.field.full{
+    grid-column:1 / -1;
+}
+
+input{
+    width:100%;
+    padding:14px;
+    border-radius:14px;
+    border:1px solid rgba(255,255,255,0.15);
+    background:rgba(0,0,0,0.4);
+    color:white;
+    outline:none;
+    transition:.3s;
+}
+
+input:focus{
+    border-color:#06b6d4;
+    box-shadow:0 0 18px rgba(6,182,212,.3);
+    transform:scale(1.02);
+}
+
+/* floating label */
+label{
+    position:absolute;
+    top:14px;
+    left:14px;
+    font-size:12px;
+    opacity:.6;
+    transition:.3s;
+}
+
+input:focus + label,
+input:not(:placeholder-shown) + label{
+    top:-10px;
+    left:10px;
+    font-size:11px;
+    background:#05060a;
+    padding:0 6px;
+    color:#06b6d4;
+}
+
+/* =========================
+BUTTONS
+========================= */
+
+.actions{
+    display:flex;
+    gap:15px;
+    margin-top:25px;
+}
+
+button{
+    flex:1;
+    padding:14px;
+    border:none;
+    border-radius:14px;
+    font-weight:700;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.save{
+    background:linear-gradient(45deg,#4f46e5,#06b6d4);
+}
+
+.save:hover{
+    transform:translateY(-3px);
+    box-shadow:0 15px 30px rgba(6,182,212,.3);
+}
+
+.cancel{
+    background:rgba(255,255,255,0.1);
+    color:white;
+}
+
+.cancel:hover{
+    background:rgba(255,255,255,0.2);
+}
+
+/* =========================
+RESPONSIVE
+========================= */
+
+@media(max-width:900px){
+    .wrapper{
+        grid-template-columns:1fr;
     }
 
-    body{
-        background: #0f0f0f;
-        min-height: 100vh;
-
-        display: flex;
-        justify-content: center;
-        align-items: center;
+    .grid{
+        grid-template-columns:1fr;
     }
-
-    .box{
-        width: 380px;
-        background: #1c1c1c;
-        padding: 25px;
-
-        border-radius: 14px;
-        box-shadow: 0 20px 50px rgba(0,0,0,0.6);
-    }
-
-    .field{
-        margin-bottom: 14px;
-    }
-
-    label{
-        display: block;
-        margin-bottom: 5px;
-        color: #bbb;
-        font-size: 13px;
-    }
-
-    input, select, textarea{
-        width: 100%;
-        padding: 12px;
-
-        background: #111;
-        border: 1px solid #333;
-        border-radius: 10px;
-
-        color: white;
-        outline: none;
-    }
-
-    input:focus{
-        border-color: #00aaff;
-        box-shadow: 0 0 10px rgba(0,170,255,0.3);
-    }
-
-    button{
-        width: 100%;
-        padding: 12px;
-
-        border: none;
-        border-radius: 10px;
-
-        background: #00aaff;
-        color: white;
-        font-weight: bold;
-
-        cursor: pointer;
-        transition: 0.3s;
-    }
-
-    button:hover{
-        background: hotpink;
-        transform: scale(1.03);
-    }
+}
 
 </style>
 </head>
 
 <body>
 
-<div class="box">
+<div class="bg-grid"></div>
 
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
+<div class="blob one"></div>
+<div class="blob two"></div>
+<div class="blob three"></div>
 
-        <div class="field">
-            <label>Ism</label>
-            {{ form.first_name }}
+<div class="wrapper">
+
+    <!-- LEFT -->
+    <div class="side">
+        <h1>User Preview</h1>
+        <p>This panel shows live preview of user data. Modern admin UI style design.</p>
+
+        <div class="avatar-preview">
+            <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png">
         </div>
 
-        <div class="field">
-            <label>Familiya</label>
-            {{ form.last_name }}
-        </div>
+        <p>All changes will be saved instantly after submission. Make sure data is correct.</p>
+    </div>
 
-        <div class="field">
-            <label>Yosh</label>
-            {{ form.age }}
-        </div>
+    <!-- RIGHT FORM -->
+    <div class="form-box">
 
-        <div class="field">
-            <label>Email</label>
-            {{ form.email }}
-        </div>
+        <div class="title">Update User Panel</div>
 
-        <div class="field">
-            <label>Telefon</label>
-            {{ form.phon }}
-        </div>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
 
-        <div class="field">
-            <label>Avatar</label>
-            {{ form.avatar }}
-        </div>
+            <div class="grid">
 
-        <button type="submit">Saqlash</button>
+                <div class="field">
+                    <input name="first_name" placeholder=" " value="{{ form.first_name.value }}">
+                    <label>First Name</label>
+                </div>
 
-    </form>
+                <div class="field">
+                    <input name="last_name" placeholder=" " value="{{ form.last_name.value }}">
+                    <label>Last Name</label>
+                </div>
+
+                <div class="field">
+                    <input name="age" placeholder=" " value="{{ form.age.value }}">
+                    <label>Age</label>
+                </div>
+
+                <div class="field">
+                    <input name="email" placeholder=" " value="{{ form.email.value }}">
+                    <label>Email</label>
+                </div>
+
+                <div class="field full">
+                    <input name="phon" placeholder=" " value="{{ form.phon.value }}">
+                    <label>Phone</label>
+                </div>
+
+                <div class="field full">
+                    {{ form.avatar }}
+                </div>
+
+            </div>
+
+            <div class="actions">
+                <button class="save" type="submit">Save Changes</button>
+                <button class="cancel" type="button">Cancel</button>
+            </div>
+
+        </form>
+
+    </div>
 
 </div>
 

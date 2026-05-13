@@ -3,192 +3,263 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Home</title>
+<title>Cyber Home</title>
 
 <style>
 *{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: 'Segoe UI', sans-serif;
 }
 
 body{
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: #0a0f1c;
-    overflow: hidden;
-    color: white;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+    color:white;
+    background:#05060a;
 }
 
-/* glowing blobs */
-.blob{
-    position: absolute;
-    width: 300px;
-    height: 300px;
-    filter: blur(80px);
-    opacity: 0.5;
-    animation: move 10s infinite alternate;
+/* 🌌 Aurora animated background */
+body::before{
+    content:"";
+    position:absolute;
+    width:200%;
+    height:200%;
+    background: radial-gradient(circle at 20% 20%, #00f5ff33, transparent 40%),
+                radial-gradient(circle at 80% 30%, #ff00ff33, transparent 40%),
+                radial-gradient(circle at 50% 80%, #7c3aed33, transparent 40%);
+    filter: blur(60px);
+    animation: aurora 10s infinite alternate;
 }
 
-.blob1{
-    background: #3b82f6;
-    top: -50px;
-    left: -50px;
+@keyframes aurora{
+    0%{transform:translate(0,0) scale(1);}
+    100%{transform:translate(-80px,60px) scale(1.2);}
 }
 
-.blob2{
-    background: #ec4899;
-    bottom: -80px;
-    right: -80px;
-    animation-delay: 3s;
+/* 🟣 floating particles */
+.particle{
+    position:absolute;
+    width:6px;
+    height:6px;
+    background:white;
+    border-radius:50%;
+    opacity:0.3;
+    animation: floatUp 6s infinite linear;
 }
 
-@keyframes move{
-    from{transform: translate(0,0);}
-    to{transform: translate(80px, -60px);}
+@keyframes floatUp{
+    from{transform:translateY(100vh); opacity:0;}
+    to{transform:translateY(-20vh); opacity:1;}
 }
 
-/* CARD */
+/* 🧊 glass cyber card */
 .box{
-    width: 440px;
-    padding: 45px;
-    border-radius: 25px;
+    width:480px;
+    padding:55px;
+    border-radius:25px;
 
-    background: rgba(255,255,255,0.06);
-    backdrop-filter: blur(15px);
-    border: 1px solid rgba(255,255,255,0.1);
+    background:rgba(255,255,255,0.05);
+    backdrop-filter: blur(25px);
 
-    text-align: center;
+    border:1px solid rgba(255,255,255,0.12);
 
-    box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+    text-align:center;
+    position:relative;
+    z-index:2;
 
-    animation: fade 0.8s ease forwards;
-    transform: translateY(30px);
-    opacity: 0;
+    box-shadow:
+        0 0 40px rgba(0,245,255,0.2),
+        0 0 80px rgba(255,0,255,0.1);
+
+    animation: appear 1s ease;
 }
 
-@keyframes fade{
-    to{
-        transform: translateY(0);
-        opacity: 1;
-    }
+@keyframes appear{
+    from{transform:scale(0.8) translateY(40px); opacity:0;}
+    to{transform:scale(1) translateY(0); opacity:1;}
 }
 
-/* title */
+/* neon border scan */
+.box::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    border-radius:25px;
+    padding:2px;
+
+    background:linear-gradient(90deg,#00f5ff,#ff00ff,#7c3aed,#00f5ff);
+    background-size:300% 300%;
+    animation: borderMove 6s linear infinite;
+
+    -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor;
+            mask-composite:exclude;
+}
+
+@keyframes borderMove{
+    0%{background-position:0% 50%;}
+    100%{background-position:100% 50%;}
+}
+
+/* glitch title */
 h1{
-    font-size: 36px;
-    background: linear-gradient(90deg,#3b82f6,#ec4899);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    font-size:44px;
+    letter-spacing:2px;
+    position:relative;
+    text-transform:uppercase;
+
+    background:linear-gradient(90deg,#00f5ff,#ff00ff,#7c3aed);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+h1::before,
+h1::after{
+    content:"WELCOME";
+    position:absolute;
+    left:0;
+    width:100%;
+    overflow:hidden;
+}
+
+h1::before{
+    color:#00f5ff;
+    animation: glitch1 2s infinite linear;
+}
+
+h1::after{
+    color:#ff00ff;
+    animation: glitch2 2s infinite linear;
+}
+
+@keyframes glitch1{
+    0%{transform:translate(0,0);}
+    20%{transform:translate(-2px,2px);}
+    40%{transform:translate(2px,-2px);}
+    60%{transform:translate(-1px,1px);}
+    100%{transform:translate(0,0);}
+}
+
+@keyframes glitch2{
+    0%{transform:translate(0,0);}
+    20%{transform:translate(2px,-2px);}
+    40%{transform:translate(-2px,2px);}
+    60%{transform:translate(1px,-1px);}
+    100%{transform:translate(0,0);}
 }
 
 /* text */
 p{
-    margin-top: 10px;
-    opacity: 0.7;
-    font-size: 15px;
-}
-
-/* greeting */
-.greet{
-    margin-top: 15px;
-    font-size: 16px;
-    color: #a5f3fc;
+    margin-top:15px;
+    opacity:0.7;
 }
 
 /* buttons */
 .btns{
-    margin-top: 25px;
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    flex-wrap: wrap;
+    margin-top:35px;
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    flex-wrap:wrap;
 }
 
 a{
-    text-decoration: none;
-    padding: 11px 18px;
-    border-radius: 12px;
-    color: white;
-    font-weight: bold;
-    transition: 0.3s;
-    position: relative;
-    overflow: hidden;
+    padding:12px 22px;
+    border-radius:12px;
+    text-decoration:none;
+    color:white;
+    font-weight:600;
+    position:relative;
+    overflow:hidden;
+    transition:0.3s;
+    border:1px solid rgba(255,255,255,0.1);
 }
 
-/* neon glow effect */
-a::before{
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: rgba(255,255,255,0.2);
-    transition: 0.4s;
+/* neon wave hover */
+a::after{
+    content:"";
+    position:absolute;
+    top:0;
+    left:-120%;
+    width:120%;
+    height:100%;
+    background:linear-gradient(120deg,transparent,rgba(255,255,255,0.3),transparent);
+    transform:skewX(-20deg);
 }
 
-a:hover::before{
-    left: 100%;
+a:hover::after{
+    animation: shine 0.7s;
+}
+
+@keyframes shine{
+    0%{left:-120%;}
+    100%{left:120%;}
 }
 
 a:hover{
-    transform: scale(1.1);
-    box-shadow: 0 0 20px rgba(255,255,255,0.2);
+    transform:translateY(-4px) scale(1.08);
 }
 
-/* button colors */
-.login{ background: #3b82f6; }
-.register{ background: #ec4899; }
-.logout{ background: #ef4444; }
+.login{background:#00f5ff;color:#000;}
+.register{background:#ff00ff;}
+.logout{background:#7c3aed;}
 
-/* small glow border animation */
-.box::before{
-    content: "";
-    position: absolute;
-    inset: -2px;
-    border-radius: 25px;
-    background: linear-gradient(90deg,#3b82f6,#ec4899,#3b82f6);
-    z-index: -1;
-    filter: blur(20px);
-    opacity: 0.3;
+/* scanline effect */
+body::after{
+    content:"";
+    position:absolute;
+    width:100%;
+    height:100%;
+    background:linear-gradient(to bottom, transparent, rgba(255,255,255,0.03), transparent);
+    animation: scan 6s linear infinite;
+}
+
+@keyframes scan{
+    0%{transform:translateY(-100%);}
+    100%{transform:translateY(100%);}
 }
 </style>
 </head>
 
 <body>
 
-<div class="blob blob1"></div>
-<div class="blob blob2"></div>
+<!-- floating particles -->
+<script>
+for(let i=0;i<25;i++){
+    let p = document.createElement("div");
+    p.className = "particle";
+    p.style.left = Math.random()*100 + "vw";
+    p.style.animationDuration = (3 + Math.random()*5) + "s";
+    document.body.appendChild(p);
+}
+</script>
 
 <div class="box">
 
-    <h1>Welcome</h1>
-
-    <p>This is your Django application home page</p>
+    <h1>WELCOME</h1>
+    <p>Neural Authentication Interface</p>
 
     {% if user.is_authenticated %}
-
-        <div class="greet">
-            Hello, <b>{{ user.first_name }}</b> 👋
-        </div>
+        <p style="color:#00f5ff;">Hello, <b>{{ user.first_name }}</b></p>
 
         <div class="btns">
-            <a href="{% url 'logout' %}" class="logout">Logout</a>
+            <a class="logout" href="{% url 'logout' %}">Logout</a>
         </div>
 
     {% else %}
-
-        <p>You are not logged in</p>
+        <p>You are offline</p>
 
         <div class="btns">
-            <a href="{% url 'login' %}" class="login">Login</a>
-            <a href="{% url 'register_view' %}" class="register">Register</a>
+            <a class="login" href="{% url 'login' %}">Login</a>
+            <a class="register" href="{% url 'register_view' %}">Register</a>
         </div>
-
     {% endif %}
 
 </div>

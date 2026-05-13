@@ -1,129 +1,165 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create User</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Create User</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
-    *{
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
 
-    body{
-        font-family: Arial, sans-serif;
-        background: linear-gradient(135deg, #000000, #1a1a1a);
-        min-height: 100vh;
+/* ================= RESET ================= */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
 
-        display: flex;
-        justify-content: center;
-        align-items: center;
+/* ================= BODY ================= */
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#05060a;
+    overflow:hidden;
+}
 
-        animation: fadeIn 0.7s ease;
-    }
+/* ================= BACKGROUND ================= */
+.bg{
+    position:fixed;
+    inset:0;
+    background:
+    radial-gradient(circle at 20% 30%, #6366f1, transparent 40%),
+    radial-gradient(circle at 80% 20%, #06b6d4, transparent 45%),
+    radial-gradient(circle at 50% 80%, #f43f5e, transparent 45%);
+    filter:blur(80px);
+    opacity:.55;
+    animation:move 8s infinite alternate;
+    z-index:-1;
+}
 
-    @keyframes fadeIn{
-        from{
-            opacity: 0;
-            transform: translateY(50px);
-        }
-        to{
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
+@keyframes move{
+    from{transform:scale(1);}
+    to{transform:scale(1.2) rotate(8deg);}
+}
 
+/* ================= CARD ================= */
+.card{
+    width:420px;
+    padding:30px;
+    border-radius:22px;
+
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.15);
+    backdrop-filter:blur(20px);
+
+    box-shadow:0 25px 60px rgba(0,0,0,0.5);
+    animation:pop .5s ease;
+}
+
+@keyframes pop{
+    from{transform:scale(.8); opacity:0;}
+    to{transform:scale(1); opacity:1;}
+}
+
+/* ================= TITLE ================= */
+h1{
+    text-align:center;
+    color:white;
+    font-size:24px;
+    margin-bottom:20px;
+}
+
+/* ================= FORM ================= */
+form{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+}
+
+/* Django form fields override */
+form p{
+    position:relative;
+    margin:0;
+}
+
+/* INPUTS */
+input, select, textarea{
+    width:100%;
+    padding:14px;
+    border-radius:14px;
+
+    border:1px solid rgba(255,255,255,0.15);
+    background:rgba(0,0,0,0.4);
+
+    color:white;
+    outline:none;
+
+    transition:.3s;
+}
+
+input:focus{
+    border-color:#06b6d4;
+    box-shadow:0 0 15px rgba(6,182,212,0.4);
+    transform:scale(1.02);
+}
+
+/* ================= BUTTON ================= */
+button{
+    margin-top:10px;
+    padding:14px;
+    border:none;
+    border-radius:14px;
+
+    background:linear-gradient(45deg,#6366f1,#06b6d4,#f43f5e);
+    background-size:200%;
+    color:white;
+
+    font-weight:700;
+    cursor:pointer;
+    transition:.4s;
+}
+
+button:hover{
+    background-position:right;
+    transform:translateY(-3px);
+    box-shadow:0 15px 40px rgba(6,182,212,0.3);
+}
+
+/* ================= FLOAT EFFECT ================= */
+.card:hover{
+    transform:translateY(-5px);
+    transition:.3s;
+}
+
+/* ================= RESPONSIVE ================= */
+@media(max-width:500px){
     .card{
-        background: white;
-        padding: 30px;
-        border-radius: 15px;
-        width: 400px;
-
-        box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-
-        transition: 0.3s ease;
+        width:90%;
     }
-
-    .card:hover{
-        transform: translateY(-5px);
-    }
-
-    h1{
-        text-align: center;
-        margin-bottom: 20px;
-        color: #111;
-    }
-
-    form p{
-        margin-bottom: 12px;
-    }
-
-    input, textarea, select{
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        outline: none;
-
-        transition: 0.3s;
-    }
-
-    input:focus{
-        border-color: #007BFF;
-        box-shadow: 0 0 5px rgba(0,123,255,0.4);
-    }
-
-    button{
-        width: 100%;
-        padding: 12px;
-        border: none;
-        background: #007BFF;
-        color: white;
-        font-size: 16px;
-        border-radius: 10px;
-        cursor: pointer;
-
-        transition: 0.3s ease;
-    }
-
-    button:hover{
-        background: hotpink;
-        transform: scale(1.05);
-    }
-
-    /* exit animation */
-    body.fade-out{
-        opacity: 0;
-        transform: scale(0.95);
-        transition: all 0.5s ease;
-    }
+}
 
 </style>
 </head>
 
 <body>
 
+<div class="bg"></div>
+
 <div class="card">
 
-    <h1>Foydalanuvchi yaratish</h1>
+    <h1>Create User</h1>
 
     <form method="post" enctype="multipart/form-data" id="form">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Yaratish</button>
+        <button type="submit">Create User</button>
     </form>
 
 </div>
-
-<script>
-    const form = document.getElementById("form");
-
-    form.addEventListener("submit", function(){
-        document.body.classList.add("fade-out");
-    });
-</script>
 
 </body>
 </html>

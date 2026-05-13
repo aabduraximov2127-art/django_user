@@ -1,200 +1,255 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User info</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User Profile</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
-    *{
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
 
-    body{
-        background: linear-gradient(135deg, #000000, #1a1a1a);
-        font-family: Arial, sans-serif;
-        padding: 30px;
-        min-height: 100vh;
+/* ================= RESET ================= */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
 
-        /* animation */
-        animation: fadeIn 0.8s ease;
-    }
+/* ================= BODY ================= */
+body{
+    min-height:100vh;
+    background:#05060a;
+    color:white;
+    padding:30px;
+    overflow-x:hidden;
+}
 
-    @keyframes fadeIn{
-        from{
-            opacity: 0;
-            transform: translateX(80px);
-        }
-        to{
-            opacity: 1;
-            transform: translateX(0);
-        }
-    }
+/* ================= BACKGROUND ================= */
+.bg{
+    position:fixed;
+    inset:0;
+    background:
+    radial-gradient(circle at 20% 20%, #6366f1, transparent 40%),
+    radial-gradient(circle at 80% 30%, #06b6d4, transparent 45%),
+    radial-gradient(circle at 50% 80%, #f43f5e, transparent 45%);
+    filter:blur(90px);
+    opacity:.55;
+    animation:move 8s infinite alternate;
+    z-index:-1;
+}
 
+@keyframes move{
+    from{transform:scale(1);}
+    to{transform:scale(1.2) rotate(8deg);}
+}
+
+/* ================= LAYOUT ================= */
+.container{
+    max-width:900px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:1fr 2fr;
+    gap:25px;
+}
+
+/* ================= LEFT PROFILE CARD ================= */
+.profile-card{
+    background:rgba(255,255,255,0.06);
+    border:1px solid rgba(255,255,255,0.12);
+    border-radius:24px;
+    padding:25px;
+    backdrop-filter:blur(20px);
+    text-align:center;
+    transition:.3s;
+}
+
+.profile-card:hover{
+    transform:translateY(-5px);
+}
+
+/* AVATAR */
+.avatar{
+    width:130px;
+    height:130px;
+    margin:auto;
+    border-radius:50%;
+    overflow:hidden;
+    border:3px solid #06b6d4;
+    box-shadow:0 0 25px rgba(6,182,212,0.4);
+}
+
+.avatar img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+/* NAME */
+.name{
+    margin-top:15px;
+    font-size:20px;
+    font-weight:700;
+}
+
+/* STATUS */
+.status{
+    font-size:13px;
+    opacity:.7;
+    margin-top:5px;
+}
+
+/* ================= RIGHT INFO ================= */
+.info-card{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}
+
+/* BOX */
+.box{
+    background:rgba(255,255,255,0.06);
+    border:1px solid rgba(255,255,255,0.12);
+    border-radius:20px;
+    padding:18px 20px;
+    backdrop-filter:blur(20px);
+    transition:.3s;
+}
+
+.box:hover{
+    transform:translateY(-4px);
+    border-color:rgba(6,182,212,0.4);
+}
+
+/* LABEL */
+.label{
+    font-size:12px;
+    opacity:.6;
+}
+
+/* VALUE */
+.value{
+    font-size:16px;
+    font-weight:600;
+    margin-top:5px;
+}
+
+/* ================= ACTIONS ================= */
+.actions{
+    display:flex;
+    gap:12px;
+    margin-top:10px;
+}
+
+.btn{
+    flex:1;
+    padding:12px;
+    border:none;
+    border-radius:14px;
+    font-weight:700;
+    cursor:pointer;
+    transition:.3s;
+    text-decoration:none;
+    text-align:center;
+    color:white;
+}
+
+.update{
+    background:linear-gradient(45deg,#6366f1,#06b6d4);
+}
+
+.delete{
+    background:linear-gradient(45deg,#ef4444,#f97316);
+}
+
+.back{
+    background:rgba(255,255,255,0.1);
+}
+
+.btn:hover{
+    transform:translateY(-3px);
+}
+
+/* ================= RESPONSIVE ================= */
+@media(max-width:800px){
     .container{
-        max-width: 800px;
-        margin: auto;
+        grid-template-columns:1fr;
     }
-
-    .div6,
-    .div5,
-    .div4{
-        background: white;
-        padding: 25px;
-        border-radius: 15px;
-        margin-bottom: 20px;
-
-        box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-
-        transition: 0.4s ease;
-    }
-
-    .div6:hover,
-    .div5:hover,
-    .div4:hover{
-        transform: translateY(-5px);
-    }
-
-    h1{
-        color: #111;
-        margin-bottom: 20px;
-        text-align: center;
-    }
-
-    p{
-        font-size: 18px;
-        color: #444;
-        margin-bottom: 10px;
-    }
-
-    .div5{
-        text-align: center;
-    }
-
-    .div5 img{
-        width: 220px;
-        height: 220px;
-        object-fit: cover;
-        border-radius: 50%;
-        border: 5px solid #007BFF;
-
-        transition: 0.5s ease;
-    }
-
-    .div5 img:hover{
-        transform: scale(1.05) rotate(2deg);
-    }
-
-    .div4{
-        text-align: center;
-    }
-
-    .div4 a{
-        display: inline-block;
-        margin: 10px;
-        padding: 12px 25px;
-
-        background: #007BFF;
-        color: white;
-        text-decoration: none;
-
-        border-radius: 10px;
-
-        transition: 0.3s ease;
-    }
-
-    .div4 a:hover{
-        background: hotpink;
-        transform: scale(1.05);
-    }
-
-    hr{
-        margin: 15px 0;
-        border: none;
-    }
-
-    /* page exit animation */
-    body.fade-out{
-        opacity: 0;
-        transform: translateX(-100px);
-        transition: all 0.6s ease;
-    }
+}
 
 </style>
 </head>
 
 <body>
 
+<div class="bg"></div>
+
 <div class="container">
 
-    <div class="div6">
-        <h1>{{ user.first_name }} {{ user.last_name }} Ma'lumotlari</h1>
+    <!-- LEFT -->
+    <div class="profile-card">
 
-        <p><b>Ism va Familiya:</b> {{ user.first_name }} {{ user.last_name }}</p>
+        <div class="avatar">
+            {% if user.avatar %}
+                <img src="{{ user.avatar.url }}">
+            {% else %}
+                <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png">
+            {% endif %}
+        </div>
 
-        <p><b>Yoshi:</b> {{ user.age }}</p>
+        <div class="name">
+            {{ user.first_name }} {{ user.last_name }}
+        </div>
 
-        <p><b>Email:</b> {{ user.email }}</p>
-
-        <p><b>Telefon:</b> {{ user.phon }}</p>
-    </div>
-
-    <div class="div5">
-
-        {% if not user.avatar %}
-            <p>Rasm mavjud emas</p>
-
-        {% else %}
-
-            <img src="{{ user.avatar.url }}" alt="Avatar">
-
-        {% endif %}
+        <div class="status">
+            Active User • Cyber Profile
+        </div>
 
     </div>
 
-    <div class="div4">
+    <!-- RIGHT -->
+    <div class="info-card">
 
-        <a class="page-link" href="{% url 'user_update' slug=user.slug %}">
-            Update
-        </a>
+        <div class="box">
+            <div class="label">Full Name</div>
+            <div class="value">{{ user.first_name }} {{ user.last_name }}</div>
+        </div>
 
-        <a class="page-link" href="{% url 'user_delete' id=user.id %}">
-            Delete
-        </a>
+        <div class="box">
+            <div class="label">Age</div>
+            <div class="value">{{ user.age }}</div>
+        </div>
 
-        <a class="page-link" href="{% url 'user_list' %}">
-            Orqaga
-        </a>
+        <div class="box">
+            <div class="label">Email</div>
+            <div class="value">{{ user.email }}</div>
+        </div>
+
+        <div class="box">
+            <div class="label">Phone</div>
+            <div class="value">{{ user.phon }}</div>
+        </div>
+
+        <div class="actions">
+
+            <a href="{% url 'user_update' slug=user.slug %}" class="btn update">
+                Update
+            </a>
+
+            <a href="{% url 'user_delete' id=user.id %}" class="btn delete">
+                Delete
+            </a>
+
+            <a href="{% url 'user_list' %}" class="btn back">
+                Back
+            </a>
+
+        </div>
 
     </div>
 
 </div>
-
-<script>
-
-    const links = document.querySelectorAll(".page-link");
-
-    links.forEach(link => {
-
-        link.addEventListener("click", function(e){
-
-            e.preventDefault();
-
-            const href = this.getAttribute("href");
-
-            document.body.classList.add("fade-out");
-
-            setTimeout(() => {
-                window.location.href = href;
-            }, 600);
-
-        });
-
-    });
-
-</script>
 
 </body>
 </html>
