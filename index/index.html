@@ -6,121 +6,191 @@
 <title>Users</title>
 
 <style>
-    *{
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
 
-    body{
-        font-family: Arial, sans-serif;
-        background: #111;
-        padding: 20px;
-        min-height: 100vh;
-    }
+body{
+    min-height: 100vh;
+    background: radial-gradient(circle at top, #1f2937, #0f172a);
+    padding: 30px;
+    color: white;
+}
 
-    .nav{
-        margin-bottom: 20px;
-        text-align: center;
-    }
+/* NAV */
+.nav{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+    animation: fadeDown 0.6s ease;
+}
 
-    .nav a{
-        background: #007BFF;
-        color: white;
-        padding: 10px 18px;
-        border-radius: 10px;
-        text-decoration: none;
-        transition: 0.3s;
-        display: inline-block;
-    }
+@keyframes fadeDown{
+    from{transform: translateY(-20px); opacity: 0;}
+    to{transform: translateY(0); opacity: 1;}
+}
 
-    .nav a:hover{
-        background: hotpink;
-    }
+.nav a{
+    background: linear-gradient(45deg, #06b6d4, #3b82f6);
+    color: white;
+    padding: 10px 18px;
+    border-radius: 12px;
+    text-decoration: none;
+    transition: 0.3s;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+}
 
-    .nav form{
-        margin-top: 10px;
-    }
+.nav a:hover{
+    transform: scale(1.05);
+    box-shadow: 0 0 15px #06b6d4;
+}
 
-    .nav input{
-        padding: 8px;
-        border-radius: 8px;
-        border: none;
-        width: 200px;
-        outline: none;
-    }
+.nav form{
+    display: flex;
+    gap: 10px;
+}
 
-    .nav button{
-        padding: 8px 12px;
-        border: none;
-        border-radius: 8px;
-        background: #007BFF;
-        color: white;
-        cursor: pointer;
-    }
+.nav input{
+    padding: 10px 15px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    width: 250px;
+    transition: 0.3s;
+}
 
-    .container{
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: flex-start;
-        gap: 15px;
-    }
+.nav input:focus{
+    box-shadow: 0 0 10px #06b6d4;
+}
 
-    .card{
-        width: 150px;
-        height: 190px;
-        background: white;
-        border-radius: 15px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        cursor: pointer;
-        transition: 0.4s ease;
-    }
+.nav button{
+    padding: 10px 15px;
+    border: none;
+    border-radius: 10px;
+    background: #06b6d4;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
 
-    .card:hover{
-        transform: translateY(-8px) scale(1.03);
-    }
+.nav button:hover{
+    background: #0ea5e9;
+}
 
-    .avatar{
-        width: 55px;
-        height: 55px;
-        border-radius: 50%;
-        overflow: hidden;
-        border: 3px solid #007BFF;
-        margin-bottom: 8px;
-    }
+/* GRID */
+.container{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 18px;
+}
 
-    .avatar img{
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
+/* CARD */
+.card{
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(10px);
+    border-radius: 18px;
+    padding: 15px;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.3s;
+    position: relative;
+    overflow: hidden;
+    animation: pop 0.5s ease;
+}
 
-    .name{
-        font-size: 14px;
-        font-weight: bold;
-        color: #333;
-        margin-bottom: 10px;
-    }
+@keyframes pop{
+    from{transform: scale(0.8); opacity: 0;}
+    to{transform: scale(1); opacity: 1;}
+}
 
-    .actions{
-        display: flex;
-        gap: 5px;
-    }
+.card:hover{
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 0 20px rgba(6,182,212,0.6);
+}
 
-    .actions a{
-        font-size: 10px;
-        padding: 4px 6px;
-        border-radius: 6px;
-        text-decoration: none;
-        color: white;
-    }
+/* ripple effect */
+.card::after{
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    background: rgba(255,255,255,0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    transition: width 0.4s, height 0.4s;
+}
 
-    .update{ background: #007BFF; }
-    .delete{ background: #ff2e2e; }
+.card:active::after{
+    width: 200px;
+    height: 200px;
+}
+
+/* AVATAR */
+.avatar{
+    width: 70px;
+    height: 70px;
+    margin: auto;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid #06b6d4;
+}
+
+.avatar img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* NAME */
+.name{
+    margin-top: 10px;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+/* ACTIONS */
+.actions{
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.actions a{
+    font-size: 12px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: white;
+    transition: 0.3s;
+}
+
+.update{
+    background: #3b82f6;
+}
+
+.delete{
+    background: #ef4444;
+}
+
+.actions a:hover{
+    transform: scale(1.1);
+}
+
+/* EMPTY */
+.empty{
+    text-align: center;
+    margin-top: 40px;
+    font-size: 20px;
+    opacity: 0.7;
+}
 </style>
 </head>
 
@@ -128,14 +198,12 @@
 
 <div class="nav">
 
-    <a href="{% url 'user_create' %}">+ Create User</a>
+    <a href="{% url 'user_create' %}">
+        + Create User
+    </a>
 
-    <!-- SEARCH FORM -->
     <form method="GET">
-        <input type="text"
-               name="q"
-               placeholder="Ism yozing..."
-               value="{{ query }}">
+        <input type="text" name="q" placeholder="Ism yozing..." value="{{ query }}">
         <button type="submit">Search</button>
     </form>
 
@@ -152,44 +220,40 @@
         {% if user.avatar %}
             <img src="{{ user.avatar.url }}">
         {% else %}
-            <img src="https://i.ibb.co/2t3Fq8F/default-user.png">
+            <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png">
         {% endif %}
     </div>
 
     <div class="name">
-        {{ user.first_name }}
+        {{ user.first_name }} {{ user.last_name }}
     </div>
 
     <div class="actions">
-
-        <a class="update"
-           href="{% url 'user_update' slug=user.slug %}"
+        <a href="{% url 'user_update' slug=user.slug %}" class="update"
            onclick="event.stopPropagation()">
             Update
         </a>
 
-        <a class="delete"
-           href="{% url 'user_delete' id=user.id %}"
+        <a href="{% url 'user_delete' id=user.id %}" class="delete"
            onclick="event.stopPropagation()">
             Delete
         </a>
-
     </div>
 
 </div>
 
+{% empty %}
+    <h1 class="empty">User topilmadi</h1>
 {% endfor %}
 
 </div>
 
 <script>
-    const cards = document.querySelectorAll(".user-card");
-
-    cards.forEach(card => {
-        card.addEventListener("click", function(){
-            window.location.href = this.dataset.url;
-        });
+document.querySelectorAll(".user-card").forEach(card => {
+    card.addEventListener("click", () => {
+        window.location.href = card.dataset.url;
     });
+});
 </script>
 
 </body>

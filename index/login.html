@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Login</title>
+
+<style>
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial;
+}
+
+body{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: radial-gradient(circle, #1f2937, #0f172a);
+    color: white;
+}
+
+.box{
+    width: 350px;
+    padding: 30px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(10px);
+    text-align: center;
+}
+
+input{
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+}
+
+.btn-area{
+    position: relative;
+    height: 60px;
+    margin-top: 15px;
+}
+
+#loginBtn{
+    position: absolute;
+    left: 0;
+    top: 0;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 10px;
+    background: #111827;
+    color: white;
+    cursor: pointer;
+    transition: 0.08s;
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+
+    <h2>Login</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <input type="text" id="username" name="username" placeholder="Username">
+        <input type="password" id="password" name="password" placeholder="Password">
+
+        <div class="btn-area">
+            <button type="submit" id="loginBtn">Login</button>
+        </div>
+    </form>
+    
+
+</div>
+
+<script>
+const btn = document.getElementById("loginBtn");
+const username = document.getElementById("username");
+const password = document.getElementById("password");
+const area = document.querySelector(".btn-area");
+
+function empty(){
+    return username.value.trim() === "" || password.value.trim() === "";
+}
+
+// ⚡ REAL TIME ESCAPE
+area.addEventListener("mousemove", (e) => {
+
+    if (!empty()) return;
+
+    const rect = btn.getBoundingClientRect();
+
+    const dx = e.clientX - (rect.left + rect.width / 2);
+    const dy = e.clientY - (rect.top + rect.height / 2);
+
+    const dist = Math.sqrt(dx*dx + dy*dy);
+
+    if (dist < 90) {
+        escapeButton();
+    }
+});
+
+// ⚡ FAST ESCAPE FUNCTION
+function escapeButton(){
+    const maxX = area.clientWidth - btn.clientWidth;
+    const maxY = area.clientHeight - btn.clientHeight;
+
+    const x = Math.random() * maxX;
+    const y = Math.random() * maxY;
+
+    btn.style.transition = "0.05s";
+    btn.style.left = x + "px";
+    btn.style.top = y + "px";
+}
+
+// input check
+function check(){
+    if (!empty()){
+        btn.style.left = "0px";
+        btn.style.top = "0px";
+        btn.style.background = "green";
+        btn.style.transition = "0.3s";
+    } else {
+        btn.style.background = "#111827";
+    }
+}
+
+username.addEventListener("input", check);
+password.addEventListener("input", check);
+</script>
+
+</body>
+</html>

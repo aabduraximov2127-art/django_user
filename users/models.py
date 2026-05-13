@@ -36,7 +36,7 @@ class ControlUsers(AbstractUser):
     slug=models.SlugField(unique=True, blank=True)
 
     USERNAME_FIELD="email"
-    REQUIRED_FIELDS=["first_name", "last_name"]
+    REQUIRED_FIELDS=[]
 
     objects=CustomUserManager()
 
