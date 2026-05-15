@@ -112,30 +112,30 @@ def register_view(request):
     return render(request, "register.html", {"form": form})
 
 
-def login(request):
+# def login(request):
 
-    if request.method == "POST":
+#     if request.method == "POST":
 
-        form = LoginForm(request, data=request.POST)
+#         form = LoginForm(request, data=request.POST)
 
-        if form.is_valid():
+#         if form.is_valid():
 
-            user = form.get_user()
-            auth_login(request, user)
+#             user = form.get_user()
+#             auth_login(request, user)
         
         
-            return redirect("user_list")
+#             return redirect("user_list")
 
-    else:
-        form = LoginForm()
+#     else:
+#         form = LoginForm()
 
-    return render(request, "login.html", {
-        "form": form
-    })
+#     return render(request, "login.html", {
+#         "form": form
+#     })
 
 
 
-def logout_view(request):
-    logout(request)
-    return redirect("login")
+# def logout_view(request):
+#     logout(request)
+#     return redirect("login")
 

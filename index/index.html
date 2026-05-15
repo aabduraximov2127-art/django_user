@@ -3,11 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Cyber Users</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
+
 *{
     margin:0;
     padding:0;
@@ -17,222 +19,483 @@
 
 body{
     min-height:100vh;
-    background:#070A12;
+    background:#050816;
     overflow-x:hidden;
     color:white;
     padding:30px;
+    position:relative;
 }
 
-/* ===== Animated background ===== */
+/* ===== BACKGROUND ===== */
+
 .bg{
     position:fixed;
     inset:0;
+
     background:
-    radial-gradient(circle at 20% 20%, #6d28d9 0%, transparent 35%),
-    radial-gradient(circle at 80% 30%, #06b6d4 0%, transparent 40%),
-    radial-gradient(circle at 40% 80%, #f43f5e 0%, transparent 40%);
-    filter: blur(60px);
-    opacity:.5;
+    radial-gradient(circle at 20% 20%, #06b6d4 0%, transparent 35%),
+    radial-gradient(circle at 80% 30%, #8b5cf6 0%, transparent 35%),
+    radial-gradient(circle at 40% 80%, #f43f5e 0%, transparent 35%);
+
+    filter:blur(80px);
+    opacity:.45;
+
     z-index:-2;
-    animation:moveBg 10s infinite alternate;
+
+    animation:bgMove 12s infinite alternate;
 }
 
-@keyframes moveBg{
-    from{transform:scale(1) rotate(0deg);}
-    to{transform:scale(1.2) rotate(10deg);}
+@keyframes bgMove{
+    from{
+        transform:scale(1);
+    }
+    to{
+        transform:scale(1.2) rotate(8deg);
+    }
+}
+
+/* ===== PARTICLES ===== */
+
+.particle{
+    position:fixed;
+
+    width:5px;
+    height:5px;
+
+    border-radius:50%;
+    background:white;
+
+    opacity:.25;
+
+    pointer-events:none;
+
+    animation:floatUp linear infinite;
+}
+
+@keyframes floatUp{
+    from{
+        transform:translateY(100vh);
+        opacity:0;
+    }
+    to{
+        transform:translateY(-20vh);
+        opacity:1;
+    }
 }
 
 /* ===== HEADER ===== */
+
 .header{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    margin-bottom:35px;
+    margin-bottom:40px;
     flex-wrap:wrap;
     gap:20px;
 }
 
 .logo{
-    font-size:38px;
+    font-size:42px;
     font-weight:800;
-    letter-spacing:1px;
 }
 
 .logo span{
-    background:linear-gradient(45deg,#06b6d4,#8b5cf6,#f43f5e);
+    background:linear-gradient(
+    45deg,
+    #06b6d4,
+    #8b5cf6,
+    #f43f5e
+    );
+
     -webkit-background-clip:text;
     -webkit-text-fill-color:transparent;
 }
 
-/* BUTTON */
-.create-btn{
-    padding:12px 18px;
-    border-radius:14px;
-    text-decoration:none;
-    font-weight:600;
-    color:white;
-    background:linear-gradient(45deg,#6366f1,#06b6d4);
-    box-shadow:0 10px 30px rgba(99,102,241,.4);
-    transition:.3s;
-}
+/* ===== NAV ===== */
 
-.create-btn:hover{
-    transform:translateY(-3px);
-    box-shadow:0 15px 40px rgba(6,182,212,.4);
-}
-
-/* SEARCH */
-.search-box{
+.nav{
     display:flex;
-    gap:10px;
+    gap:15px;
+    align-items:center;
 }
 
-.search-box input{
-    width:250px;
-    height:45px;
+/* ===== BUTTONS ===== */
+
+.create-btn,
+.logout-btn{
     border:none;
-    border-radius:12px;
-    padding:0 12px;
     outline:none;
-    background:rgba(255,255,255,.9);
+
+    padding:13px 22px;
+
+    border-radius:16px;
+
+    color:white;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    text-decoration:none;
+
+    transition:.35s;
 }
 
-.search-box button{
-    border:none;
-    padding:0 16px;
-    border-radius:12px;
-    background:#22c55e;
-    color:white;
-    font-weight:600;
-    cursor:pointer;
+.create-btn{
+    background:linear-gradient(
+    135deg,
+    #06b6d4,
+    #3b82f6
+    );
+
+    box-shadow:
+    0 10px 30px rgba(6,182,212,.35);
+}
+
+.logout-btn{
+    background:linear-gradient(
+    135deg,
+    #ef4444,
+    #f97316
+    );
+
+    box-shadow:
+    0 10px 30px rgba(239,68,68,.3);
+}
+
+.create-btn:hover,
+.logout-btn:hover{
+    transform:
+    translateY(-4px)
+    scale(1.05);
 }
 
 /* ===== GRID ===== */
+
 .container{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
-    gap:22px;
+    grid-template-columns:
+    repeat(auto-fit,minmax(270px,1fr));
+
+    gap:28px;
 }
 
 /* ===== CARD ===== */
+
 .card{
     position:relative;
-    padding:22px;
-    border-radius:22px;
-    text-align:center;
+
+    padding:28px;
+
+    border-radius:30px;
+
+    overflow:hidden;
+
     cursor:pointer;
 
-    background:rgba(255,255,255,0.07);
-    border:1px solid rgba(255,255,255,0.15);
-    backdrop-filter:blur(18px);
+    background:
+    linear-gradient(
+    145deg,
+    rgba(255,255,255,.10),
+    rgba(255,255,255,.03)
+    );
 
-    transform-style:preserve-3d;
-    transition:.4s;
-    overflow:hidden;
+    border:1px solid rgba(255,255,255,.08);
+
+    backdrop-filter:blur(20px);
+
+    transition:.45s;
+
+    isolation:isolate;
 }
 
-/* glow line */
+/* neon glow */
+
 .card::before{
-    content:'';
+    content:"";
+
     position:absolute;
-    width:120%;
-    height:120%;
-    top:-50%;
-    left:-50%;
-    background:linear-gradient(45deg,transparent,rgba(255,255,255,.2),transparent);
-    transform:rotate(25deg);
-    transition:.5s;
-}
 
-.card:hover::before{
-    left:100%;
-}
+    width:220px;
+    height:220px;
 
-/* hover float */
-.card:hover{
-    transform:translateY(-10px) rotateX(8deg);
-    box-shadow:0 20px 50px rgba(0,0,0,.4);
-}
-
-/* AVATAR */
-.avatar{
-    width:85px;
-    height:85px;
-    margin:auto;
     border-radius:50%;
+
+    background:
+    radial-gradient(
+    circle,
+    rgba(6,182,212,.30),
+    transparent 70%
+    );
+
+    top:-100px;
+    right:-100px;
+
+    z-index:-1;
+
+    animation:glowMove 6s infinite alternate;
+}
+
+@keyframes glowMove{
+    from{
+        transform:scale(1);
+    }
+    to{
+        transform:scale(1.25);
+    }
+}
+
+/* border */
+
+.card::after{
+    content:"";
+
+    position:absolute;
+    inset:0;
+
+    border-radius:30px;
+
+    padding:1px;
+
+    background:
+    linear-gradient(
+    135deg,
+    rgba(255,255,255,.25),
+    transparent,
+    rgba(255,255,255,.15)
+    );
+
+    -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+
+    -webkit-mask-composite:xor;
+
+    mask-composite:exclude;
+}
+
+/* hover */
+
+.card:hover{
+    transform:
+    translateY(-14px)
+    scale(1.02);
+
+    box-shadow:
+    0 25px 60px rgba(0,0,0,.45);
+}
+
+/* ===== TOP ===== */
+
+.top{
+    position:relative;
+
+    display:flex;
+    justify-content:center;
+}
+
+/* ===== AVATAR ===== */
+
+.avatar{
+    width:110px;
+    height:110px;
+
+    border-radius:28px;
+
     overflow:hidden;
-    border:2px solid #06b6d4;
-    box-shadow:0 0 25px rgba(6,182,212,.4);
+
+    padding:4px;
+
+    background:
+    linear-gradient(
+    135deg,
+    #06b6d4,
+    #8b5cf6,
+    #f43f5e
+    );
+
+    transform:rotate(5deg);
+
+    transition:.4s;
+}
+
+.card:hover .avatar{
+    transform:
+    rotate(0deg)
+    scale(1.05);
 }
 
 .avatar img{
     width:100%;
     height:100%;
+
     object-fit:cover;
+
+    border-radius:24px;
 }
 
-/* NAME */
-.name{
-    margin-top:14px;
-    font-size:18px;
+/* ===== ONLINE ===== */
+
+.online{
+    position:absolute;
+
+    bottom:0;
+    right:32%;
+
+    width:18px;
+    height:18px;
+
+    border-radius:50%;
+
+    background:#22c55e;
+
+    border:3px solid #050816;
+
+    box-shadow:
+    0 0 18px #22c55e;
+
+    animation:pulse 1.5s infinite;
+}
+
+@keyframes pulse{
+    0%{
+        transform:scale(1);
+    }
+    50%{
+        transform:scale(1.2);
+    }
+    100%{
+        transform:scale(1);
+    }
+}
+
+/* ===== INFO ===== */
+
+.info{
+    margin-top:22px;
+    text-align:center;
+}
+
+.info h2{
+    font-size:22px;
     font-weight:700;
 }
 
-/* ACTIONS */
+.info p{
+    margin-top:6px;
+
+    color:#94a3b8;
+
+    font-size:14px;
+
+    letter-spacing:1px;
+}
+
+/* ===== LINE ===== */
+
+.line{
+    width:100%;
+    height:1px;
+
+    margin:22px 0;
+
+    background:
+    linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,.2),
+    transparent
+    );
+}
+
+/* ===== ACTIONS ===== */
+
 .actions{
     display:flex;
-    justify-content:center;
-    gap:10px;
-    margin-top:15px;
+    gap:12px;
 }
 
 .actions a{
-    padding:8px 12px;
-    border-radius:10px;
+    flex:1;
+
+    text-align:center;
+
+    padding:11px;
+
+    border-radius:14px;
+
     text-decoration:none;
-    font-size:13px;
-    font-weight:600;
+
     color:white;
-    transition:.3s;
+
+    font-size:13px;
+    font-weight:700;
+
+    transition:.35s;
 }
 
 .update{
-    background:linear-gradient(45deg,#3b82f6,#06b6d4);
+    background:
+    linear-gradient(
+    135deg,
+    #3b82f6,
+    #06b6d4
+    );
 }
 
 .delete{
-    background:linear-gradient(45deg,#ef4444,#f97316);
+    background:
+    linear-gradient(
+    135deg,
+    #ef4444,
+    #f97316
+    );
 }
 
 .actions a:hover{
-    transform:scale(1.1);
+    transform:
+    translateY(-3px)
+    scale(1.05);
 }
 
-/* EMPTY */
+/* ===== EMPTY ===== */
+
 .empty{
     text-align:center;
-    margin-top:60px;
-    font-size:22px;
+    margin-top:70px;
+    font-size:24px;
     opacity:.7;
 }
 
-/* RESPONSIVE */
+/* ===== RESPONSIVE ===== */
+
 @media(max-width:700px){
-    body{padding:18px;}
+
+    body{
+        padding:18px;
+    }
 
     .header{
         flex-direction:column;
         align-items:flex-start;
     }
 
-    .search-box{
-        width:100%;
+    .logo{
+        font-size:34px;
     }
 
-    .search-box input{
+    .nav{
         width:100%;
+        flex-wrap:wrap;
+    }
+
+    .create-btn,
+    .logout-btn{
+        width:100%;
+        text-align:center;
     }
 }
+
 </style>
 </head>
 
@@ -240,7 +503,32 @@ body{
 
 <div class="bg"></div>
 
+<!-- PARTICLES -->
+
+<script>
+
+for(let i=0;i<35;i++){
+
+    let p = document.createElement("div");
+
+    p.className = "particle";
+
+    p.style.left =
+    Math.random()*100 + "vw";
+
+    p.style.animationDuration =
+    (4 + Math.random()*6) + "s";
+
+    p.style.opacity =
+    Math.random();
+
+    document.body.appendChild(p);
+}
+
+</script>
+
 <!-- HEADER -->
+
 <div class="header">
 
     <div class="logo">
@@ -249,13 +537,21 @@ body{
 
     <div class="nav">
 
-        <a href="{% url 'user_create' %}" class="create-btn">
+        <a href="{% url 'user_create' %}"
+        class="create-btn">
             + Create
         </a>
 
-        <form class="search-box" method="GET">
-            <input type="text" name="q" placeholder="Search user..." value="{{ query }}">
-            <button type="submit">Go</button>
+        <form action="{% url 'logout' %}"
+        method="post">
+
+            {% csrf_token %}
+
+            <button class="logout-btn"
+            type="submit">
+                Logout
+            </button>
+
         </form>
 
     </div>
@@ -263,43 +559,134 @@ body{
 </div>
 
 <!-- USERS -->
+
 <div class="container">
 
 {% for user in users %}
 
-<div class="card user-card" data-url="{% url 'user_detail' slug=user.slug %}">
+<div class="card user-card"
+data-url="{% url 'user_detail' slug=user.slug %}">
 
-    <div class="avatar">
-        {% if user.avatar %}
-            <img src="{{ user.avatar.url }}">
-        {% else %}
-            <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png">
-        {% endif %}
+    <!-- TOP -->
+
+    <div class="top">
+
+        <div class="avatar">
+
+            {% if user.avatar %}
+                <img src="{{ user.avatar.url }}">
+            {% else %}
+                <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png">
+            {% endif %}
+
+        </div>
+
+        <div class="online"></div>
+
     </div>
 
-    <div class="name">
-        {{ user.first_name }} {{ user.last_name }}
+    <!-- INFO -->
+
+    <div class="info">
+
+        <h2>
+            {{ user.first_name }}
+            {{ user.last_name }}
+        </h2>
+
+        <p>
+            @{{ user.username }}
+        </p>
+
     </div>
+
+    <!-- LINE -->
+
+    <div class="line"></div>
+
+    <!-- ACTIONS -->
 
     <div class="actions">
-        <a href="{% url 'user_update' slug=user.slug %}" class="update" onclick="event.stopPropagation()">Edit</a>
-        <a href="{% url 'user_delete' id=user.id %}" class="delete" onclick="event.stopPropagation()">Del</a>
+
+        <a href="{% url 'user_update' slug=user.slug %}"
+        class="update"
+        onclick="event.stopPropagation()">
+            Edit
+        </a>
+
+        <a href="{% url 'user_delete' id=user.id %}"
+        class="delete"
+        onclick="event.stopPropagation()">
+            Delete
+        </a>
+
     </div>
 
 </div>
 
 {% empty %}
-<div class="empty">No users found</div>
+
+<div class="empty">
+    No users found
+</div>
+
 {% endfor %}
 
 </div>
 
 <script>
+
+/* ===== CARD CLICK ===== */
+
 document.querySelectorAll(".user-card").forEach(card=>{
+
     card.addEventListener("click",()=>{
-        window.location.href = card.dataset.url;
+
+        window.location.href =
+        card.dataset.url;
     });
 });
+
+/* ===== 3D EFFECT ===== */
+
+document.querySelectorAll(".card").forEach(card=>{
+
+    card.addEventListener("mousemove",(e)=>{
+
+        const rect =
+        card.getBoundingClientRect();
+
+        const x =
+        e.clientX - rect.left;
+
+        const y =
+        e.clientY - rect.top;
+
+        const rotateY =
+        ((x / rect.width) - 0.5) * 12;
+
+        const rotateX =
+        ((y / rect.height) - 0.5) * -12;
+
+        card.style.transform = `
+            perspective(1000px)
+            rotateX(${rotateX}deg)
+            rotateY(${rotateY}deg)
+            translateY(-8px)
+        `;
+    });
+
+    card.addEventListener("mouseleave",()=>{
+
+        card.style.transform = `
+            perspective(1000px)
+            rotateX(0deg)
+            rotateY(0deg)
+            translateY(0px)
+        `;
+    });
+});
+
 </script>
 
 </body>
