@@ -21,22 +21,28 @@
 body{
     min-height:100vh;
     background:#050816;
-    padding:25px;
+    overflow-x:hidden;
     color:white;
+    padding:25px;
 }
 
 /* ================= BACKGROUND ================= */
-body::before{
-    content:"";
+.bg{
     position:fixed;
     inset:0;
     background:
-    radial-gradient(circle at 20% 20%, #06b6d4 0%, transparent 40%),
-    radial-gradient(circle at 80% 30%, #a855f7 0%, transparent 40%),
-    radial-gradient(circle at 50% 80%, #ff006e 0%, transparent 40%);
-    filter:blur(90px);
-    opacity:.4;
+    radial-gradient(circle at 20% 20%, #06b6d4 0%, transparent 35%),
+    radial-gradient(circle at 80% 30%, #8b5cf6 0%, transparent 35%),
+    radial-gradient(circle at 40% 80%, #f43f5e 0%, transparent 35%);
+    filter:blur(80px);
+    opacity:.45;
     z-index:-2;
+    animation:bgMove 12s infinite alternate;
+}
+
+@keyframes bgMove{
+    from{transform:scale(1);}
+    to{transform:scale(1.2) rotate(8deg);}
 }
 
 /* ================= HEADER ================= */
@@ -47,66 +53,74 @@ body::before{
     margin-bottom:25px;
 }
 
-/* ❌ ANIMATION OLIB TASHLANDI */
+/* LOGO */
 .logo{
+    width:240px;
+    overflow:hidden;
+    white-space:nowrap;
+}
+
+#cyberText{
+    display:inline-block;
     font-size:36px;
     font-weight:800;
-    white-space:nowrap;
-    background:linear-gradient(90deg,#00f5ff,#a855f7,#ff006e);
+    background:linear-gradient(45deg,#06b6d4,#8b5cf6,#f43f5e);
     -webkit-background-clip:text;
     -webkit-text-fill-color:transparent;
 }
 
-/* ================= GRID ================= */
+/* ================= NAV ================= */
+.nav{
+    display:flex;
+    gap:10px;
+}
+
+.btn{
+    padding:10px 14px;
+    border-radius:10px;
+    border:none;
+    cursor:pointer;
+    font-weight:600;
+    color:white;
+    text-decoration:none;
+    transition:.3s;
+    font-size:13px;
+}
+
+.create-btn{
+    background:linear-gradient(135deg,#06b6d4,#3b82f6);
+}
+
+.logout-btn{
+    background:linear-gradient(135deg,#ef4444,#f97316);
+}
+
+.btn:hover{
+    transform:scale(1.05);
+}
+
+/* ================= GRID (COMPACT) ================= */
 .container{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
     gap:14px;
 }
 
-/* ================= CARD ================= */
+/* ================= CARD (SMALL) ================= */
 .card{
     position:relative;
-    padding:14px;
+    padding:12px;
     border-radius:18px;
-    background:rgba(255,255,255,0.06);
-    backdrop-filter:blur(18px);
-    border:1px solid rgba(255,255,255,0.1);
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(20px);
+    border:1px solid rgba(255,255,255,0.08);
     cursor:pointer;
     transition:.3s;
     overflow:hidden;
 }
 
-/* COLORS */
-.card:nth-child(1){--clr:#00f5ff;}
-.card:nth-child(2){--clr:#a855f7;}
-.card:nth-child(3){--clr:#ff006e;}
-.card:nth-child(4){--clr:#22c55e;}
-.card:nth-child(5){--clr:#f59e0b;}
-.card:nth-child(6){--clr:#3b82f6;}
-.card:nth-child(7){--clr:#ef4444;}
-.card:nth-child(8){--clr:#10b981;}
-
-/* glow */
-.card::before{
-    content:"";
-    position:absolute;
-    inset:-2px;
-    background:var(--clr);
-    opacity:0;
-    filter:blur(20px);
-    transition:.4s;
-    z-index:-1;
-}
-
-.card:hover::before{
-    opacity:0.6;
-}
-
 .card:hover{
-    transform:translateY(-6px) scale(1.03);
-    box-shadow:0 0 20px var(--clr);
-    border-color:var(--clr);
+    transform:translateY(-6px) scale(1.02);
 }
 
 /* ================= AVATAR ================= */
@@ -116,7 +130,7 @@ body::before{
     margin:auto;
     border-radius:16px;
     overflow:hidden;
-    border:2px solid var(--clr);
+    border:2px solid #06b6d4;
 }
 
 .avatar img{
@@ -159,8 +173,13 @@ body::before{
     font-weight:600;
 }
 
-.edit{background:#3b82f6;}
-.delete{background:#ef4444;}
+.actions a:nth-child(1){
+    background:#3b82f6;
+}
+
+.actions a:nth-child(2){
+    background:#ef4444;
+}
 
 /* ================= EMPTY ================= */
 .empty{
@@ -171,7 +190,14 @@ body::before{
 
 /* ================= RESPONSIVE ================= */
 @media(max-width:600px){
-    .header{flex-direction:column;gap:10px;}
+    .header{
+        flex-direction:column;
+        gap:10px;
+    }
+
+    #cyberText{
+        font-size:28px;
+    }
 }
 
 </style>
@@ -179,10 +205,27 @@ body::before{
 
 <body>
 
+<div class="bg"></div>
+
+<!-- HEADER -->
 <div class="header">
-    <div class="logo">CyberUsers</div>
+
+    <div class="logo">
+        <span id="cyberText">CyberUsers CyberUsers CyberUsers</span>
+    </div>
+
+    <div class="nav">
+        <a href="{% url 'user_create' %}" class="btn create-btn">Create</a>
+
+        <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button class="btn logout-btn">Logout</button>
+        </form>
+    </div>
+
 </div>
 
+<!-- USERS -->
 <div class="container">
 
 {% for user in users %}
@@ -203,8 +246,8 @@ body::before{
     </div>
 
     <div class="actions">
-        <a class="edit" href="{% url 'user_update' slug=user.slug %}">Edit</a>
-        <a class="delete" href="{% url 'user_delete' id=user.id %}">Delete</a>
+        <a href="{% url 'user_update' slug=user.slug %}">Edit</a>
+        <a href="{% url 'user_delete' id=user.id %}">Del</a>
     </div>
 
 </div>
@@ -215,14 +258,34 @@ body::before{
 
 </div>
 
+<!-- JS -->
 <script>
 
-/* open user */
+/* OPEN USER */
 document.querySelectorAll(".user-card").forEach(card=>{
     card.addEventListener("click",()=>{
         window.location.href = card.dataset.url;
     });
 });
+
+/* CYBER TEXT ANIMATION */
+const cyber = document.getElementById("cyberText");
+
+let x = 0;
+let dir = 1;
+
+function moveText(){
+    x += dir * 1.5;
+
+    if(x > 150) dir = -1;
+    if(x < -150) dir = 1;
+
+    cyber.style.transform = `translateX(${x}px)`;
+
+    requestAnimationFrame(moveText);
+}
+
+moveText();
 
 </script>
 
