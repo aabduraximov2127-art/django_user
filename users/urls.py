@@ -11,7 +11,10 @@ urlpatterns = [
     path("delete/<int:id>/", views.user_delete, name="user_delete"),
     path('user/<slug:slug>/', views.user_detail, name='user_detail'),
     path("register/", views.register_view, name="register_view"),
-    path("login/", LoginView.as_view(template_name="login.html", authentication_form=LoginForm), name="login"),
-    path("logout/", LogoutView.as_view(next_page="login"), name="logout"),
+    path('login/', views.login, name='login'),
+    path("logout/", views.logout_view, name="logout"),
     path('users/', views.user_list, name='user_list'),
+    path('profile/<int:id>/', views.profile_view, name='profile'),
+    path('profile/update/<int:id>/', views.profile_update, name='profile_update'),
+    path('profile/delete/<int:id>/', views.profile_delete, name='profile_delete'),
 ]

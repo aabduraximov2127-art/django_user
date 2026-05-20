@@ -76,3 +76,34 @@ class LoginForm(AuthenticationForm):
             "placeholder": "Parol"
         })
     )
+# profile
+
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = models.UserProfile
+        fields = [
+            'bio',
+            'website',
+        ]
+class ProfileUpdateForm(forms.ModelForm):
+    class Meta:
+        model = models.UserProfile
+        fields = [
+            'bio',
+            'website',
+        ]
+
+        
+
+class ProfileDeleteForm(forms.ModelForm):
+    class Meta:
+        model = models.UserProfile
+        fields = []
+        
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = models.UserProfile
+        fields = [
+            'bio',
+            'website',
+        ]

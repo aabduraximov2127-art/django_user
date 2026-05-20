@@ -7,7 +7,9 @@ from django.contrib.auth import (
 )
 from unidecode import unidecode
 
-from .forms import UserForm, RegisterForm, LoginForm
+
+from .forms import UserForm, RegisterForm, LoginForm,UserProfileForm,ProfileUpdateForm,ProfileDeleteForm
+from django.contrib.auth.decorators import login_required
 
 User = get_user_model()
 
@@ -33,9 +35,7 @@ def normalize(text):
 
 
 def home(request):
-
-
-
+    user = request.user
     return render(request, "home.html")
 
 
@@ -112,30 +112,69 @@ def register_view(request):
     return render(request, "register.html", {"form": form})
 
 
-# def login(request):
+def login(request):
 
-#     if request.method == "POST":
+    if request.method == "POST":
 
-#         form = LoginForm(request, data=request.POST)
+        form = LoginForm(request, data=request.POST)
 
-#         if form.is_valid():
+        if form.is_valid():
 
-#             user = form.get_user()
-#             auth_login(request, user)
+            user = form.get_user()
+            auth_login(request, user)
         
         
-#             return redirect("user_list")
+            return redirect("user_list")
 
-#     else:
-#         form = LoginForm()
+    else:
+        form = LoginForm()
 
-#     return render(request, "login.html", {
-#         "form": form
-#     })
+    return render(request, "login.html", {
+        "form": form
+    })
 
 
 
-# def logout_view(request):
-#     logout(request)
-#     return redirect("login")
+def logout_view(request):
+    logout(request)
+    return redirect("login")
+
+# @login_required
+def profile_view(request, id):
+    user = get_object_or_404(UserProfileForm, id=id)
+    profile = user.userprofile
+
+    return render(request, "profile.html", {
+        "user": user,
+        "profile": profile
+    })
+    
+def profile_update(request, id):
+    user = get_object_or_404(ProfileUpdateForm, id=id)
+    profile = user.userprofile
+
+    if request.method == "POST":
+        form = ProfileUpdateForm(request.POST, instance=profile)
+
+        if form.is_valid():
+            form.save()
+            return redirect("user_list")
+
+    else:
+        form = ProfileUpdateForm(instance=profile)
+
+    return render(request, "profile_update.html", {
+        "form": form
+    })
+
+def profile_delete(request, id):
+
+    profile = get_object_or_404(ProfileDeleteForm, id=id)
+
+    if request.method == "POST":
+        profile.delete()
+        return redirect("user_list")
+
+    return render(request, "profile_delete.html", {"profile": profile})
+
 

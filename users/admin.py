@@ -11,4 +11,5 @@ class UserAdmin(admin.ModelAdmin):
     readonly_fields=('slug',)
     list_filter=('email',)
     list_per_page=15
-    
+
+admin.site.register(models.UserProfile)
