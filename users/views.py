@@ -9,7 +9,7 @@ from unidecode import unidecode
 
 from . import models
 from .forms import UserForm, RegisterForm, LoginForm
-from .forms import ProfileUpdateForm, ProfileDeleteForm
+from .forms import ProfileUpdateForm, ProfileDeleteForm,UserProfileUpdateForm
 from django.contrib.auth.decorators import login_required
 
 User = get_user_model()
@@ -74,7 +74,7 @@ def user_update(request, slug):
 
         if form.is_valid():
             form.save()
-            return redirect("user_detail", slug=user.slug)
+            return redirect("user_list")
 
     else:
         form = UserForm(instance=user)
@@ -145,18 +145,18 @@ def profile(request, slug):
     profile = get_object_or_404(models.ControlUsers, slug=slug)
     return render(request, "profile.html", {"profile": profile})
 
-def profile_update(request, slug):
+def userprofile_update(request, slug):
     profile = get_object_or_404(models.ControlUsers, slug=slug)
 
     if request.method == "POST":
-        form = ProfileUpdateForm(request.POST, request.FILES, instance=profile)
+        form = UserProfileUpdateForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
             form.save()
-            return redirect("user_list", slug=profile.slug)
+            return redirect("user_detail", slug=profile.slug)
     else:
-        form = ProfileUpdateForm(instance=profile)
+        form = UserProfileUpdateForm(instance=profile)
 
-    return render(request, "profile_update.html", {"form": form})
+    return render(request, "userprofile_update.html", {"form": form})
 
 def profile_delete(request, slug):
     profile = get_object_or_404(models.ControlUsers, slug=slug)
@@ -166,5 +166,18 @@ def profile_delete(request, slug):
         return redirect("user_list")
 
     return render(request, "profile_delete.html", {"profile": profile})
+
+def profile_update(request, slug):
+    profile = get_object_or_404(models.ControlUsers, slug=slug)
+
+    if request.method == "POST":
+        form = ProfileUpdateForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+            return redirect("user_list")
+    else:
+        form = ProfileUpdateForm(instance=profile)
+
+    return render(request, "profile_update.html", {"form": form})
 
 

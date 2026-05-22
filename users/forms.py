@@ -78,7 +78,7 @@ class LoginForm(AuthenticationForm):
     )
 # profile
 
-class ProfileUpdateForm(forms.ModelForm):
+class UserProfileUpdateForm(forms.ModelForm):
 
     first_name = forms.CharField(
         max_length=100,
@@ -100,7 +100,11 @@ class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = models.UserProfile
         fields = [
+            'first_name',
             'last_name',
+            'phon',
+            'avatar',
+            'email',
             'bio',
             'website',
         ]
@@ -111,3 +115,10 @@ class ProfileDeleteForm(forms.ModelForm):
         fields = []
         
 
+class ProfileUpdateForm(forms.ModelForm):
+    class Meta:
+        model = models.UserProfile
+        fields = [
+            'bio',
+            'website',
+        ]

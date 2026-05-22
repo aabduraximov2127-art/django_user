@@ -24,7 +24,8 @@ body{
     justify-content:center;
     align-items:center;
     background:#05060a;
-    overflow:hidden;
+    overflow:x; /* overflow: hidden o'rniga faqat gorizontalni yopamiz, agar forma uzun bo'lsa scroll ishlashi uchun */
+    overflow-x: hidden;
 }
 
 /* ================= BACKGROUND ================= */
@@ -37,7 +38,7 @@ body{
     radial-gradient(circle at 50% 80%, #f43f5e, transparent 45%);
     filter:blur(80px);
     opacity:.55;
-    animation:move 8s infinite alternate;
+    animation:move 8s infinite alternate ease-in-out;
     z-index:-1;
 }
 
@@ -55,9 +56,13 @@ body{
     background:rgba(255,255,255,0.08);
     border:1px solid rgba(255,255,255,0.15);
     backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
 
     box-shadow:0 25px 60px rgba(0,0,0,0.5);
     animation:pop .5s ease;
+    
+    /* Silliq ko'tarilish effekti shu yerda bo'lishi shart */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 @keyframes pop{
@@ -65,25 +70,43 @@ body{
     to{transform:scale(1); opacity:1;}
 }
 
+/* Karta ustiga kelganda silliq float effekti */
+.card:hover{
+    transform:translateY(-8px);
+    box-shadow:0 35px 70px rgba(6,182,212,0.15);
+}
+
 /* ================= TITLE ================= */
 h1{
     text-align:center;
     color:white;
     font-size:24px;
-    margin-bottom:20px;
+    margin-bottom:25px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
 }
 
 /* ================= FORM ================= */
 form{
     display:flex;
     flex-direction:column;
-    gap:14px;
+    gap:16px;
 }
 
-/* Django form fields override */
-form p{
-    position:relative;
-    margin:0;
+/* Django maydonlari uchun maxsus konteyner */
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    text-align: left;
+}
+
+/* Input nomlari (Label) */
+.form-field label {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 13px;
+    font-weight: 500;
+    padding-left: 4px;
 }
 
 /* INPUTS */
@@ -97,14 +120,55 @@ input, select, textarea{
 
     color:white;
     outline:none;
-
-    transition:.3s;
+    font-size: 14px;
+    transition: all .3s ease;
 }
 
-input:focus{
+/* Fayl yuklash maydoni stili buzilmasligi uchun */
+input[type="file"] {
+    padding: 10px;
+    font-size: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    cursor: pointer;
+}
+
+input:focus, select:focus, textarea:focus{
     border-color:#06b6d4;
     box-shadow:0 0 15px rgba(6,182,212,0.4);
-    transform:scale(1.02);
+    transform:scale(1.015);
+    background:rgba(0,0,0,0.6);
+}
+
+/* Select ichidagi variantlar qora fonda ko'rinishi uchun */
+select option {
+    background: #0f111a;
+    color: white;
+}
+
+/* Django yordamchi matnlari (Help Text) */
+.help-text {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 11px;
+    padding-left: 4px;
+}
+
+/* Maydon ichidagi xatoliklar */
+.error-list {
+    color: #f43f5e;
+    font-size: 12px;
+    list-style: none;
+    padding-left: 4px;
+}
+
+/* Umumi xatolik paneli */
+.non-field-errors {
+    background: rgba(244, 63, 94, 0.15);
+    border: 1px solid rgba(244, 63, 94, 0.3);
+    padding: 12px;
+    border-radius: 12px;
+    color: #f43f5e;
+    font-size: 13px;
+    text-align: center;
 }
 
 /* ================= BUTTON ================= */
@@ -119,8 +183,9 @@ button{
     color:white;
 
     font-weight:700;
+    font-size: 15px;
     cursor:pointer;
-    transition:.4s;
+    transition:.4s ease;
 }
 
 button:hover{
@@ -129,16 +194,15 @@ button:hover{
     box-shadow:0 15px 40px rgba(6,182,212,0.3);
 }
 
-/* ================= FLOAT EFFECT ================= */
-.card:hover{
-    transform:translateY(-5px);
-    transition:.3s;
+button:active {
+    transform:translateY(-1px);
 }
 
 /* ================= RESPONSIVE ================= */
 @media(max-width:500px){
     .card{
-        width:90%;
+        width:92%;
+        padding: 24px;
     }
 }
 
@@ -155,7 +219,39 @@ button:hover{
 
     <form method="post" enctype="multipart/form-data" id="form">
         {% csrf_token %}
-        {{ form.as_p }}
+        
+        {# Agar formada umumiy (biron maydonga tegishli bo'lmagan) xatolik bo'lsa ko'rsatiladi #}
+        {% if form.non_field_errors %}
+            <div class="non-field-errors">
+                {% for error in form.non_field_errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {# Formadagi har bir elementni alohida va tartibli chiqarish #}
+        {% for field in form %}
+            <div class="form-field">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                
+                {{ field }}
+                
+                {# Maydon haqida yordamchi eslatma (masalan: Parol uzunligi haqida) #}
+                {% if field.help_text %}
+                    <span class="help-text">{{ field.help_text|safe }}</span>
+                {% endif %}
+                
+                {# Aynan shu maydonda xatolik bo'lsa qizil rangda chiqadi #}
+                {% if field.errors %}
+                    <ul class="error-list">
+                        {% for error in field.errors %}
+                            <li>⚠️ {{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        {% endfor %}
+
         <button type="submit">Create User</button>
     </form>
 

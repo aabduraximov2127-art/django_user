@@ -1,332 +1,438 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uz">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ultra Update Panel</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terminal: Update Core Node</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
 
-<style>
+    <style>
+        /* ================= RESET & CORE ================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Fira Code', monospace;
+        }
 
-/* =========================
-RESET
-========================= */
+        body {
+            min-height: 100vh;
+            background: #050508;
+            color: #00ff66; /* Terminal Green */
+            padding: 30px;
+            position: relative;
+            overflow-x: hidden;
+        }
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Poppins',sans-serif;
-}
+        /* CRT Monitor Scanlines overlay */
+        body::before {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            z-index: 100;
+            background-size: 100% 4px, 6px 100%;
+            pointer-events: none;
+        }
 
-body{
-    min-height:100vh;
-    background:#05060a;
-    overflow-x:hidden;
-    color:white;
-}
+        .terminal-glow {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 800px;
+            height: 800px;
+            background: rgba(0, 255, 102, 0.015);
+            filter: blur(150px);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: -1;
+        }
 
-/* =========================
-BACKGROUND SYSTEM (ADVANCED)
-========================= */
+        /* ================= KIBER MATRIX GRID BACKDROP ================= */
+        .bg-matrix {
+            position: fixed;
+            inset: 0;
+            background: 
+                linear-gradient(rgba(0, 255, 102, 0.015) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 102, 0.015) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -2;
+        }
 
-.bg-grid{
-    position:fixed;
-    inset:0;
-    background:
-    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-    background-size:60px 60px;
-    z-index:-3;
-}
+        /* ================= LAYOUT WRAPPER ================= */
+        .wrapper {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 25px;
+            margin-top: 20px;
+            animation: bootUp 0.4s ease-out;
+        }
 
-.blob{
-    position:fixed;
-    width:500px;
-    height:500px;
-    filter:blur(120px);
-    opacity:.6;
-    z-index:-2;
-    animation:float 8s infinite ease-in-out;
-}
+        @keyframes bootUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-.blob.one{
-    background:#4f46e5;
-    top:-150px;
-    left:-120px;
-}
+        /* ================= COMMON TERMINAL BLOCKS ================= */
+        .terminal-block {
+            background: #0a0a0f;
+            border: 1px solid rgba(0, 255, 102, 0.2);
+            border-radius: 6px;
+            box-shadow: 0 0 25px rgba(0, 255, 102, 0.05);
+            overflow: hidden;
+        }
 
-.blob.two{
-    background:#06b6d4;
-    bottom:-200px;
-    right:-150px;
-}
+        .block-header {
+            background: #11111a;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 255, 102, 0.15);
+        }
 
-.blob.three{
-    background:#f43f5e;
-    top:40%;
-    left:30%;
-}
+        .terminal-buttons {
+            display: flex;
+            gap: 6px;
+        }
 
-@keyframes float{
-    0%{transform:translateY(0) scale(1);}
-    50%{transform:translateY(-30px) scale(1.1);}
-    100%{transform:translateY(0) scale(1);}
-}
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(0, 255, 102, 0.2);
+        }
+        .dot-active { background: #00ff66; animation: pulse 1.5s infinite alternate; }
 
-/* =========================
-MAIN LAYOUT
-========================= */
+        @keyframes pulse {
+            from { opacity: 0.4; } to { opacity: 1; }
+        }
 
-.wrapper{
-    display:grid;
-    grid-template-columns:1fr 2fr;
-    gap:30px;
-    padding:40px;
-}
+        .block-title {
+            font-size: 11px;
+            color: rgba(0, 255, 102, 0.6);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
 
-/* =========================
-LEFT PANEL (INFO CARD)
-========================= */
+        .block-body {
+            padding: 25px;
+        }
 
-.side{
-    background:rgba(255,255,255,0.06);
-    border:1px solid rgba(255,255,255,0.1);
-    border-radius:24px;
-    padding:25px;
-    backdrop-filter:blur(20px);
-    height:fit-content;
-}
+        /* ================= LEFT TERMINAL PANEL ================= */
+        .side-panel {
+            height: fit-content;
+        }
 
-.side h1{
-    font-size:22px;
-    margin-bottom:15px;
-}
+        .side-panel h1 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 15px;
+            letter-spacing: 0.5px;
+        }
 
-.side p{
-    font-size:13px;
-    opacity:.7;
-    line-height:1.5;
-}
+        .side-panel p {
+            font-size: 12px;
+            color: rgba(0, 255, 102, 0.7);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
 
-.avatar-preview{
-    width:120px;
-    height:120px;
-    border-radius:50%;
-    overflow:hidden;
-    margin:20px auto;
-    border:2px solid #06b6d4;
-    box-shadow:0 0 25px rgba(6,182,212,.4);
-}
+        .avatar-container {
+            width: 140px;
+            height: 140px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 25px auto;
+            border: 1px solid #00ff66;
+            box-shadow: 0 0 20px rgba(0, 255, 102, 0.15);
+            background: #030305;
+            position: relative;
+        }
 
-.avatar-preview img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-}
+        .avatar-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
 
-/* =========================
-FORM PANEL
-========================= */
+        .node-status {
+            font-size: 11px;
+            background: rgba(0, 255, 102, 0.05);
+            border: 1px dashed rgba(0, 255, 102, 0.3);
+            padding: 10px;
+            border-radius: 4px;
+            color: #ffffff;
+        }
 
-.form-box{
-    background:rgba(255,255,255,0.05);
-    border:1px solid rgba(255,255,255,0.1);
-    border-radius:24px;
-    padding:30px;
-    backdrop-filter:blur(25px);
-}
+        /* ================= RIGHT FORM PANEL ================= */
+        .form-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 25px;
+            border-left: 3px solid #00ff66;
+            padding-left: 10px;
+        }
 
-.title{
-    font-size:26px;
-    font-weight:800;
-    margin-bottom:20px;
-}
+        .input-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
 
-/* =========================
-INPUT GRID
-========================= */
+        .field-group {
+            position: relative;
+        }
 
-.grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:18px;
-}
+        .field-group.full-width {
+            grid-column: 1 / -1;
+        }
 
-.field{
-    position:relative;
-}
+        .field-group label {
+            display: block;
+            font-size: 11px;
+            text-transform: uppercase;
+            color: rgba(0, 255, 102, 0.5);
+            margin-bottom: 6px;
+            letter-spacing: 0.5px;
+        }
 
-.field.full{
-    grid-column:1 / -1;
-}
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
 
-input{
-    width:100%;
-    padding:14px;
-    border-radius:14px;
-    border:1px solid rgba(255,255,255,0.15);
-    background:rgba(0,0,0,0.4);
-    color:white;
-    outline:none;
-    transition:.3s;
-}
+        .input-wrapper::before {
+            content: ">";
+            position: absolute;
+            left: 0;
+            color: #00ff66;
+            font-size: 14px;
+            font-weight: bold;
+        }
 
-input:focus{
-    border-color:#06b6d4;
-    box-shadow:0 0 18px rgba(6,182,212,.3);
-    transform:scale(1.02);
-}
+        .input-wrapper input {
+            width: 100%;
+            padding: 10px 10px 10px 18px;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid rgba(0, 255, 102, 0.2);
+            outline: none;
+            color: #ffffff;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
 
-/* floating label */
-label{
-    position:absolute;
-    top:14px;
-    left:14px;
-    font-size:12px;
-    opacity:.6;
-    transition:.3s;
-}
+        .input-wrapper input:focus {
+            border-bottom-color: #00ff66;
+            box-shadow: 0 4px 10px rgba(0, 255, 102, 0.02);
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+        }
 
-input:focus + label,
-input:not(:placeholder-shown) + label{
-    top:-10px;
-    left:10px;
-    font-size:11px;
-    background:#05060a;
-    padding:0 6px;
-    color:#06b6d4;
-}
+        /* File Upload input (Avatar) adjustment */
+        .field-group.full-width input[type="file"] {
+            border: none;
+            padding-left: 0;
+            color: rgba(0, 255, 102, 0.7);
+            font-size: 12px;
+            cursor: pointer;
+            margin-top: 5px;
+        }
+        
+        .field-group.full-width input[type="file"]::-webkit-file-upload-button {
+            background: transparent;
+            border: 1px solid #00ff66;
+            color: #00ff66;
+            padding: 6px 12px;
+            border-radius: 2px;
+            cursor: pointer;
+            font-family: 'Fira Code', monospace;
+            font-size: 11px;
+            margin-right: 10px;
+            transition: all 0.2s;
+        }
 
-/* =========================
-BUTTONS
-========================= */
+        .field-group.full-width input[type="file"]::-webkit-file-upload-button:hover {
+            background: #00ff66;
+            color: #050508;
+        }
 
-.actions{
-    display:flex;
-    gap:15px;
-    margin-top:25px;
-}
+        /* ================= ACTION INTERNALS ================= */
+        .actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
 
-button{
-    flex:1;
-    padding:14px;
-    border:none;
-    border-radius:14px;
-    font-weight:700;
-    cursor:pointer;
-    transition:.3s;
-}
+        .btn {
+            flex: 1;
+            padding: 14px;
+            background: transparent;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
 
-.save{
-    background:linear-gradient(45deg,#4f46e5,#06b6d4);
-}
+        .btn-save {
+            border: 1px solid #00ff66;
+            color: #00ff66;
+        }
 
-.save:hover{
-    transform:translateY(-3px);
-    box-shadow:0 15px 30px rgba(6,182,212,.3);
-}
+        .btn-save:hover {
+            background: #00ff66;
+            color: #050508;
+            box-shadow: 0 0 20px rgba(0, 255, 102, 0.25);
+        }
 
-.cancel{
-    background:rgba(255,255,255,0.1);
-    color:white;
-}
+        .btn-cancel {
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            text-align: center;
+        }
 
-.cancel:hover{
-    background:rgba(255,255,255,0.2);
-}
+        .btn-cancel:hover {
+            border-color: #ffffff;
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.02);
+        }
 
-/* =========================
-RESPONSIVE
-========================= */
-
-@media(max-width:900px){
-    .wrapper{
-        grid-template-columns:1fr;
-    }
-
-    .grid{
-        grid-template-columns:1fr;
-    }
-}
-
-</style>
+        /* ================= RESPONSIVE ================= */
+        @media(max-width: 900px){
+            .wrapper {
+                grid-template-columns: 1fr;
+            }
+            .input-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
-
 <body>
 
-<div class="bg-grid"></div>
+    <div class="bg-matrix"></div>
+    <div class="terminal-glow"></div>
 
-<div class="blob one"></div>
-<div class="blob two"></div>
-<div class="blob three"></div>
+    <div class="wrapper">
 
-<div class="wrapper">
+        <!-- METADATA PREVIEW (LEFT COLUMN) -->
+        <div class="terminal-block side-panel">
+            <div class="block-header">
+                <div class="terminal-buttons">
+                    <span class="dot dot-active"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                </div>
+                <div class="block-title">SYS://NODE_PREVIEW</div>
+            </div>
+            <div class="block-body">
+                <h1>Matrix Live Status</h1>
+                <p>Tizim tugunlari holati va uning ma'lumotlar matritsasini onlayn nazorat paneli.</p>
 
-    <!-- LEFT -->
-    <div class="side">
-        <h1>User Preview</h1>
-        <p>This panel shows live preview of user data. Modern admin UI style design.</p>
+                <div class="avatar-container">
+                    {% if user.avatar %}
+                        <img src="{{ user.avatar.url }}" alt="Matrix Avatar">
+                    {% else %}
+                        <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Default Avatar">
+                    {% endif %}
+                </div>
 
-        <div class="avatar-preview">
-            <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png">
+                <div class="node-status">
+                    <div>⚡ STATUS: CONNECTED</div>
+                    <div style="margin-top: 4px; color: rgba(0, 255, 102, 0.5)">📌 NODE ID: {{ user.id|default:"UKNOWN_REF" }}</div>
+                </div>
+            </div>
         </div>
 
-        <p>All changes will be saved instantly after submission. Make sure data is correct.</p>
-    </div>
+        <!-- COMMAND OVERWRITE PANEL (RIGHT COLUMN) -->
+        <div class="terminal-block">
+            <div class="block-header">
+                <div class="block-title">SYS://IDENTITY_OVERWRITE.EXE</div>
+            </div>
+            <div class="block-body">
+                
+                <div class="form-title">Update Parameter Matrix</div>
 
-    <!-- RIGHT FORM -->
-    <div class="form-box">
+                <form method="post" enctype="multipart/form-data" id="updateForm">
+                    {% csrf_token %}
 
-        <div class="title">Update User Panel</div>
+                    <div class="input-grid">
 
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
+                        <div class="field-group">
+                            <label>core.identity/first_name</label>
+                            <div class="input-wrapper">
+                                <input type="text" name="first_name" value="{{ form.first_name.value|default_if_none:'' }}">
+                            </div>
+                        </div>
 
-            <div class="grid">
+                        <div class="field-group">
+                            <label>core.identity/last_name</label>
+                            <div class="input-wrapper">
+                                <input type="text" name="last_name" value="{{ form.last_name.value|default_if_none:'' }}">
+                            </div>
+                        </div>
 
-                <div class="field">
-                    <input name="first_name" placeholder=" " value="{{ form.first_name.value }}">
-                    <label>First Name</label>
-                </div>
+                        <div class="field-group">
+                            <label>core.identity/age_vector</label>
+                            <div class="input-wrapper">
+                                <input type="text" name="age" value="{{ form.age.value|default_if_none:'' }}">
+                            </div>
+                        </div>
 
-                <div class="field">
-                    <input name="last_name" placeholder=" " value="{{ form.last_name.value }}">
-                    <label>Last Name</label>
-                </div>
+                        <div class="field-group">
+                            <label>core.identity/secure_email</label>
+                            <div class="input-wrapper">
+                                <input type="email" name="email" value="{{ form.email.value|default_if_none:'' }}">
+                            </div>
+                        </div>
 
-                <div class="field">
-                    <input name="age" placeholder=" " value="{{ form.age.value }}">
-                    <label>Age</label>
-                </div>
+                        <div class="field-group full-width">
+                            <label>core.identity/network_phone</label>
+                            <div class="input-wrapper">
+                                <input type="text" name="phon" value="{{ form.phon.value|default_if_none:'' }}">
+                            </div>
+                        </div>
 
-                <div class="field">
-                    <input name="email" placeholder=" " value="{{ form.email.value }}">
-                    <label>Email</label>
-                </div>
+                        <div class="field-group full-width">
+                            <label style="margin-bottom: 12px;">core.identity/upload_avatar_stream</label>
+                            {{ form.avatar }}
+                        </div>
 
-                <div class="field full">
-                    <input name="phon" placeholder=" " value="{{ form.phon.value }}">
-                    <label>Phone</label>
-                </div>
+                    </div>
 
-                <div class="field full">
-                    {{ form.avatar }}
-                </div>
+                    <div class="actions">
+                        <button class="btn btn-save" type="submit" id="saveBtn">[ INJECT CHANGES ]</button>
+                        <a href="{% url 'user_list' %}" class="btn btn-cancel">[ ABORT ]</a>
+                    </div>
+
+                </form>
 
             </div>
-
-            <div class="actions">
-                <button class="save" type="submit">Save Changes</button>
-                <button class="cancel" type="button">Cancel</button>
-            </div>
-
-        </form>
+        </div>
 
     </div>
 
-</div>
+    <!-- SCRIPT FOR PROGRESS CONTEXT -->
+    <script>
+        document.getElementById("updateForm").addEventListener("submit", function() {
+            const btn = document.getElementById("saveBtn");
+            btn.innerText = "[ WRITING TO CORES... ]";
+            btn.style.pointerEvents = "none";
+            btn.style.opacity = "0.6";
+        });
+    </script>
 
 </body>
 </html>

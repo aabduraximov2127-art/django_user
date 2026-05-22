@@ -1,17 +1,381 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Cyber Profile</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#030712;
+    overflow-x:hidden;
+    font-family:'Poppins',sans-serif;
+    position:relative;
+    perspective: 1000px; /* 3D effekt yaxshi ishlashi uchun qo'shildi */
+}
+
+/* ===== ANIMATED BACKGROUND ===== */
+.bg{
+    position:absolute;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+.bg span{
+    position:absolute;
+    display:block;
+    width:4px;
+    height:4px;
+    background:#00ffff;
+    border-radius:50%;
+    box-shadow:0 0 20px #00ffff;
+    animation:animate 10s linear infinite;
+}
+
+.bg span:nth-child(1){left:10%; animation-duration:7s; top:90%;}
+.bg span:nth-child(2){left:20%; animation-duration:11s; top:80%;}
+.bg span:nth-child(3){left:35%; animation-duration:6s; top:85%;}
+.bg span:nth-child(4){left:50%; animation-duration:9s; top:95%;}
+.bg span:nth-child(5){left:65%; animation-duration:13s; top:90%;}
+.bg span:nth-child(6){left:80%; animation-duration:8s; top:85%;}
+.bg span:nth-child(7){left:90%; animation-duration:12s; top:80%;}
+
+@keyframes animate{
+    0%{
+        transform:translateY(0) scale(1);
+        opacity:0;
+    }
+    50%{
+        opacity:1;
+    }
+    100%{
+        transform:translateY(-120vh) scale(2);
+        opacity:0;
+    }
+}
+
+/* ===== CARD ===== */
+.card{
+    width:450px;
+    padding:35px;
+    border-radius:30px;
+    background:rgba(15,23,42,0.75);
+    border:1px solid rgba(255,255,255,0.08);
+    backdrop-filter:blur(18px);
+    box-shadow:
+    0 0 20px rgba(0,255,255,0.2),
+    0 0 60px rgba(139,92,246,0.2);
+    position:relative;
+    z-index:5;
+    /* CSS transform-origin va silliq o'tish effekti */
+    transform-style: preserve-3d;
+    transition: transform 0.1s ease-out; 
+    animation: show 1s ease forwards;
+}
+
+@keyframes show{
+    from{
+        opacity:0;
+        transform:translateY(40px) scale(.8);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0) scale(1);
+    }
+}
+
+/* ===== PROFILE ===== */
+.profile-top{
+    text-align:center;
+}
+
+.avatar{
+    width:130px;
+    height:130px;
+    border-radius:50%;
+    margin:auto;
+    overflow:hidden;
+    border:4px solid #00ffff;
+    box-shadow:
+    0 0 25px #00ffff,
+    0 0 50px #00ffff;
+    animation:pulse 2s infinite;
+}
+
+.avatar img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+@keyframes pulse{
+    50%{
+        transform:scale(1.05);
+        box-shadow:
+        0 0 40px #00ffff,
+        0 0 80px #8b5cf6;
+    }
+}
+
+.title{
+    margin-top:20px;
+    color:white;
+    font-size:32px;
+    font-family:'Orbitron',sans-serif;
+    letter-spacing:2px;
+}
+
+.sub{
+    color:#94a3b8;
+    margin-top:6px;
+    font-size:14px;
+}
+
+/* ===== INFO BOX ===== */
+.info{
+    margin-top:30px;
+}
+
+.box{
+    background:rgba(255,255,255,0.04);
+    border:1px solid rgba(255,255,255,0.05);
+    border-radius:18px;
+    padding:18px;
+    margin-bottom:18px;
+    transition:.4s;
+    position:relative;
+    overflow:hidden;
+}
+
+.box::before{
+    content:'';
+    position:absolute;
+    width:100%;
+    height:100%;
+    top:0;
+    left:-100%;
+    background:linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,255,255,0.08),
+        transparent
+    );
+    transition:.6s;
+}
+
+.box:hover::before{
+    left:100%;
+}
+
+.box:hover{
+    transform:translateY(-5px);
+    border-color:#00ffff;
+}
+
+.label{
+    color:#00ffff;
+    font-size:13px;
+    margin-bottom:10px;
+    letter-spacing:1px;
+    font-weight:600;
+}
+
+.value{
+    color:white;
+    line-height:1.7;
+    word-break:break-word;
+}
+
+/* ===== BUTTONS ===== */
+.buttons{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+    margin-top:25px;
+}
+
+.btn{
+    padding:15px;
+    border-radius:15px;
+    text-decoration:none;
+    color:white;
+    font-weight:600;
+    text-align:center;
+    transition:.4s;
+    position:relative;
+    overflow:hidden;
+}
+
+.btn::after{
+    content:'';
+    position:absolute;
+    width:0;
+    height:100%;
+    background:rgba(255,255,255,0.15);
+    top:0;
+    left:0;
+    transition:.5s;
+}
+
+.btn:hover::after{
+    width:100%;
+}
+
+.btn:hover{
+    transform:translateY(-4px) scale(1.02);
+}
+
+.edit{
+    background:linear-gradient(135deg,#06b6d4,#3b82f6);
+}
+
+.update{
+    background:linear-gradient(135deg,#8b5cf6,#ec4899);
+}
+
+.delete{
+    background:linear-gradient(135deg,#ef4444,#dc2626);
+}
+
+.back{
+    background:#111827;
+    border:1px solid rgba(255,255,255,0.08);
+}
+
+/* ===== WEBSITE LINK ===== */
+.website-link{
+    color:#38bdf8;
+    text-decoration:none;
+}
+
+.website-link:hover{
+    text-decoration:underline;
+}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:500px){
+    .card{
+        width:92%;
+        padding:25px;
+    }
+}
+</style>
 </head>
 <body>
-    <h1>Profile</h1>
-    <p>Bio: {{profile.bio}}</p>
-    <p>Website: {{profile.website}}</p>
-    <form>
-        <a href="{% url 'profile_update' slug=profile.slug %}">Edit Profile</a>
-            <a href="{% url 'profile_delete' slug=profile.slug %}">Delete Profile</a>
-    </form>
+
+<div class="bg">
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+</div>
+
+<div class="card">
+
+    <div class="profile-top">
+        <div class="avatar">
+            {% if user.avatar %}
+                <img src="{{ user.avatar.url }}" alt="avatar">
+            {% else %}
+                <img src="https://i.imgur.com/6VBx3io.png" alt="avatar">
+            {% endif %}
+        </div>
+
+        <div class="title">
+            CYBER PROFILE
+        </div>
+
+        <div class="sub">
+            Futuristic User Dashboard
+        </div>
+    </div>
+
+    <div class="info">
+        <div class="box">
+            <div class="label">
+                USER BIO
+            </div>
+            <div class="value">
+                {% if profile.bio %}
+                    {{ profile.bio }}
+                {% else %}
+                    No bio added...
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="box">
+            <div class="label">
+                WEBSITE
+            </div>
+            <div class="value">
+                {% if profile.website %}
+                    <a href="{{ profile.website }}" target="_blank" class="website-link">
+                        {{ profile.website }}
+                    </a>
+                {% else %}
+                    No website added...
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="buttons">
+        <a href="{% url 'profile_update' slug=profile.slug %}" class="btn edit">
+            ✏ Edit Profile
+        </a>
+
+        <a href="{% url 'userprofile_update' slug=profile.slug %}" class="btn update">
+            ⚡ Update User Profile
+        </a>
+
+        <a href="{% url 'profile_delete' slug=profile.slug %}" class="btn delete">
+            🗑 Delete Profile
+        </a>
+
+        <a href="{% url 'user_list' %}" class="btn back">
+            ← Back To Users
+        </a>
+    </div>
+
+</div>
+
+<script>
+const card = document.querySelector('.card');
+
+document.addEventListener('mousemove', (e) => {
+    let x = (window.innerWidth / 2 - e.pageX) / 25;
+    let y = (window.innerHeight / 2 - e.pageY) / 25;
+
+    // Karta o'z joyidan qimirlab ketmasligi uchun dastlabki holat saqlab qolindi
+    card.style.transform = `scale(1) rotateY(${x}deg) rotateX(${-y}deg)`;
+});
+
+// Sichqoncha ekrandan chiqib ketganda karta yana tekis holatga qaytishi uchun:
+document.addEventListener('mouseleave', () => {
+    card.style.transform = `scale(1) rotateY(0deg) rotateX(0deg)`;
+});
+</script>
+
 </body>
 </html>

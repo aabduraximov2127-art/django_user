@@ -1,250 +1,370 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>User Profile</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Access Granted: User Profile</title>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* ================= RESET & GENERAL ================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Share Tech Mono', monospace; /* Xakerlik terminali shrifti */
+        }
 
-<style>
+        body {
+            min-height: 100vh;
+            background: #020204;
+            color: #00ff66; /* Terminal zaharli yashil rangi */
+            padding: 40px 20px;
+            overflow-x: hidden;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
 
-/* ================= RESET ================= */
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Poppins',sans-serif;
-}
+        /* ================= MATRIX BACKGROUND EFFECT ================= */
+        .bg {
+            position: fixed;
+            inset: 0;
+            background: 
+                linear-gradient(rgba(0, 255, 102, 0.03) 50%, rgba(0, 0, 0, 0) 50%),
+                linear-gradient(90deg, rgba(189, 0, 255, 0.02) 50%, rgba(0, 0, 0, 0) 50%);
+            background-size: 100% 4px, 4px 100%;
+            z-index: -1;
+        }
 
-/* ================= BODY ================= */
-body{
-    min-height:100vh;
-    background:#05060a;
-    color:white;
-    padding:30px;
-    overflow-x:hidden;
-}
+        /* Orqa fondagi kiber nurlar */
+        .glow {
+            position: fixed;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(189, 0, 255, 0.15) 0%, transparent 70%);
+            top: 10%;
+            left: 10%;
+            z-index: -2;
+            animation: pulse 6s infinite alternate;
+        }
 
-/* ================= BACKGROUND ================= */
-.bg{
-    position:fixed;
-    inset:0;
-    background:
-    radial-gradient(circle at 20% 20%, #6366f1, transparent 40%),
-    radial-gradient(circle at 80% 30%, #06b6d4, transparent 45%),
-    radial-gradient(circle at 50% 80%, #f43f5e, transparent 45%);
-    filter:blur(90px);
-    opacity:.55;
-    animation:move 8s infinite alternate;
-    z-index:-1;
-}
+        .glow-right {
+            position: fixed;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(0, 255, 102, 0.1) 0%, transparent 70%);
+            bottom: 10%;
+            right: 5%;
+            z-index: -2;
+            animation: pulse 8s infinite alternate-reverse;
+        }
 
-@keyframes move{
-    from{transform:scale(1);}
-    to{transform:scale(1.2) rotate(8deg);}
-}
+        @keyframes pulse {
+            0% { transform: scale(1) translate(0, 0); opacity: 0.6; }
+            100% { transform: scale(1.2) translate(30px, -20px); opacity: 1; }
+        }
 
-/* ================= LAYOUT ================= */
-.container{
-    max-width:900px;
-    margin:auto;
-    display:grid;
-    grid-template-columns:1fr 2fr;
-    gap:25px;
-}
+        /* ================= LAYOUT ================= */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            margin: auto;
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 30px;
+        }
 
-/* ================= LEFT PROFILE CARD ================= */
-.profile-card{
-    background:rgba(255,255,255,0.06);
-    border:1px solid rgba(255,255,255,0.12);
-    border-radius:24px;
-    padding:25px;
-    backdrop-filter:blur(20px);
-    text-align:center;
-    transition:.3s;
-}
+        /* ================= LEFT PROFILE CARD ================= */
+        .profile-card {
+            background: rgba(5, 7, 12, 0.85);
+            border: 2px solid #00ff66;
+            border-radius: 4px; /* Qat'iy burchaklar */
+            padding: 35px 25px;
+            box-shadow: 0 0 15px rgba(0, 255, 102, 0.2);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
 
-.profile-card:hover{
-    transform:translateY(-5px);
-}
+        /* Burchaklardagi xakerlik ramkachalari (UI Brackets) */
+        .profile-card::before, .box::before {
+            content: 'SYS_LOG';
+            position: absolute;
+            top: 2px;
+            left: 5px;
+            font-size: 9px;
+            color: rgba(0, 255, 102, 0.4);
+        }
 
-/* AVATAR */
-.avatar{
-    width:130px;
-    height:130px;
-    margin:auto;
-    border-radius:50%;
-    overflow:hidden;
-    border:3px solid #06b6d4;
-    box-shadow:0 0 25px rgba(6,182,212,0.4);
-}
+        /* AVATAR */
+        .avatar {
+            width: 140px;
+            height: 140px;
+            margin: auto;
+            border-radius: 4px; /* To'rtburchak terminal uslubi */
+            overflow: hidden;
+            border: 2px solid #bd00ff;
+            box-shadow: 0 0 20px rgba(189, 0, 255, 0.4);
+            position: relative;
+        }
 
-.avatar img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-}
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(40%) contrast(120%) sepia(20%) hue-rotate(85deg); /* Yashil kiber filtr */
+        }
 
-/* NAME */
-.name{
-    margin-top:15px;
-    font-size:20px;
-    font-weight:700;
-}
+        /* NAME */
+        .name {
+            margin-top: 25px;
+            font-size: 24px;
+            font-weight: 700;
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            letter-spacing: 1px;
+        }
 
-/* STATUS */
-.status{
-    font-size:13px;
-    opacity:.7;
-    margin-top:5px;
-}
+        /* STATUS */
+        .status {
+            font-size: 14px;
+            color: #00ff66;
+            margin-top: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
 
-/* ================= RIGHT INFO ================= */
-.info-card{
-    display:flex;
-    flex-direction:column;
-    gap:15px;
-}
+        .status::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: #00ff66;
+            display: inline-block;
+            animation: blink 1s infinite;
+            box-shadow: 0 0 8px #00ff66;
+        }
 
-/* BOX */
-.box{
-    background:rgba(255,255,255,0.06);
-    border:1px solid rgba(255,255,255,0.12);
-    border-radius:20px;
-    padding:18px 20px;
-    backdrop-filter:blur(20px);
-    transition:.3s;
-}
+        @keyframes blink {
+            0%, 49% { opacity: 1; }
+            50%, 100% { opacity: 0; }
+        }
 
-.box:hover{
-    transform:translateY(-4px);
-    border-color:rgba(6,182,212,0.4);
-}
+        /* ================= RIGHT INFO ================= */
+        .info-card {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
 
-/* LABEL */
-.label{
-    font-size:12px;
-    opacity:.6;
-}
+        /* TERMINAL DATA BOX */
+        .box {
+            background: rgba(5, 7, 12, 0.7);
+            border: 1px solid rgba(0, 255, 102, 0.25);
+            border-left: 4px solid #00ff66; /* Chap tomondagi kiber chiziq */
+            border-radius: 2px;
+            padding: 15px 20px;
+            position: relative;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
 
-/* VALUE */
-.value{
-    font-size:16px;
-    font-weight:600;
-    margin-top:5px;
-}
+        .box:hover {
+            border-color: #bd00ff;
+            border-left-color: #bd00ff;
+            background: rgba(189, 0, 255, 0.05);
+            box-shadow: 0 0 15px rgba(189, 0, 255, 0.2);
+            transform: translateX(5px);
+        }
 
-/* ================= ACTIONS ================= */
-.actions{
-    display:flex;
-    gap:12px;
-    margin-top:10px;
-}
+        .box-icon {
+            color: #00ff66;
+            display: flex;
+            align-items: center;
+            opacity: 0.8;
+        }
 
-.btn{
-    flex:1;
-    padding:12px;
-    border:none;
-    border-radius:14px;
-    font-weight:700;
-    cursor:pointer;
-    transition:.3s;
-    text-decoration:none;
-    text-align:center;
-    color:white;
-}
+        .box-content {
+            flex: 1;
+        }
 
-.update{
-    background:linear-gradient(45deg,#6366f1,#06b6d4);
-}
+        /* LABEL */
+        .label {
+            font-size: 11px;
+            color: rgba(0, 255, 102, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
 
-.delete{
-    background:linear-gradient(45deg,#ef4444,#f97316);
-}
+        /* VALUE */
+        .value {
+            font-size: 18px;
+            color: #ffffff;
+            margin-top: 2px;
+            word-break: break-all;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+        }
 
-.back{
-    background:rgba(255,255,255,0.1);
-}
+        .value::before {
+            content: '> ';
+            color: #00ff66;
+        }
 
-.btn:hover{
-    transform:translateY(-3px);
-}
+        /* ================= ACTIONS (COMMANDS) ================= */
+        .actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
 
-/* ================= RESPONSIVE ================= */
-@media(max-width:800px){
-    .container{
-        grid-template-columns:1fr;
-    }
-}
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #00ff66;
+            background: transparent;
+            font-weight: 700;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            text-align: center;
+            color: #00ff66;
+            position: relative;
+        }
 
-</style>
+        .update:hover {
+            background: #00ff66;
+            color: #000;
+            box-shadow: 0 0 20px rgba(0, 255, 102, 0.6);
+        }
+
+        .delete {
+            border-color: #ef4444;
+            color: #ef4444;
+        }
+
+        .delete:hover {
+            background: #ef4444;
+            color: #000;
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.6);
+        }
+
+        .back {
+            border-color: #bd00ff;
+            color: #bd00ff;
+        }
+
+        .back:hover {
+            background: #bd00ff;
+            color: #000;
+            box-shadow: 0 0 20px rgba(189, 0, 255, 0.6);
+        }
+
+        /* ================= RESPONSIVE ================= */
+        @media(max-width: 800px) {
+            body {
+                padding: 20px 15px;
+            }
+            .container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .actions {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
+<!-- Kiber Orqa Fonlar -->
 <div class="bg"></div>
+<div class="glow"></div>
+<div class="glow-right"></div>
 
 <div class="container">
 
-    <!-- LEFT -->
-    <div class="profile-card">
-
+    <!-- TERMINAL LEFT -->
+    <div class="profile-card" style="border-left: 4px solid #bd00ff;">
         <div class="avatar">
             {% if user.avatar %}
-                <img src="{{ user.avatar.url }}">
+                <img src="{{ user.avatar.url }}" alt="Core ID Pic">
             {% else %}
-                <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png">
+                <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Default ID Pic">
             {% endif %}
         </div>
 
         <div class="name">
-            {{ user.first_name }} {{ user.last_name }}
+            {{ user.first_name }}
         </div>
 
         <div class="status">
-            Active User • Cyber Profile
+            SECURE_NODE//ONLINE
         </div>
-
     </div>
 
-    <!-- RIGHT -->
+    <!-- TERMINAL RIGHT -->
     <div class="info-card">
 
+        <!-- Full Name -->
         <div class="box">
-            <div class="label">Full Name</div>
-            <div class="value">{{ user.first_name }} {{ user.last_name }}</div>
+            <div class="box-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            </div>
+            <div class="box-content">
+                <div class="label">IDENTITY_ALIAS</div>
+                <div class="value">{{ user.first_name }} {{ user.last_name }}</div>
+            </div>
         </div>
 
+        <!-- Age -->
         <div class="box">
-            <div class="label">Age</div>
-            <div class="value">{{ user.age }}</div>
+            <div class="box-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            </div>
+            <div class="box-content">
+                <div class="label">UPTIME_AGE (YEARS)</div>
+                <div class="value">{{ user.age }}</div>
+            </div>
         </div>
 
+        <!-- Email -->
         <div class="box">
-            <div class="label">Email</div>
-            <div class="value">{{ user.email }}</div>
+            <div class="box-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+            </div>
+            <div class="box-content">
+                <div class="label">NET_ADDRESS__EMAIL</div>
+                <div class="value">{{ user.email }}</div>
+            </div>
         </div>
 
+        <!-- Phone -->
         <div class="box">
-            <div class="label">Phone</div>
-            <div class="value">{{ user.phon }}</div>
+            <div class="box-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+            </div>
+            <div class="box-content">
+                <div class="label">COMMS_LINK__PHON</div>
+                <div class="value">{{ user.phon }}</div>
+            </div>
         </div>
 
+        <!-- Commands / Actions -->
         <div class="actions">
-
-            <a href="{% url 'user_update' slug=user.slug %}" class="btn update">
-                Update
-            </a>
-
-            <a href="{% url 'user_delete' id=user.id %}" class="btn delete">
-                Delete
-            </a>
-
-            <a href="{% url 'user_list' %}" class="btn back">
-                Back
-            </a>
-
+            <a href="{% url 'user_update' slug=user.slug %}" class="btn update">_exec(update)</a>
+            <a href="{% url 'user_delete' id=user.id %}" class="btn delete">_purge(delete)</a>
+            <a href="{% url 'user_list' %}" class="btn back">_exit(back)</a>
         </div>
 
     </div>

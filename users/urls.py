@@ -17,4 +17,5 @@ urlpatterns = [
     path('profile/<slug:slug>/', views.profile, name='profile'),
     path('profile/update/<slug:slug>/', views.profile_update, name='profile_update'),
     path('profile/delete/<slug:slug>/', views.profile_delete, name='profile_delete'),
+    path('userprofile/update/<slug:slug>/', views.userprofile_update, name='userprofile_update'),
 ]

@@ -1,110 +1,293 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uz">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Update Profile</title>
+    <title>Terminal: Update Profile</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet">
 
     <style>
-
-        *{
+        /* ================= RESET & CORE ================= */
+        * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: Arial, sans-serif;
+            font-family: 'Fira Code', monospace; /* Dasturchilar shrifti */
         }
 
-        body{
+        body {
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            background: #0f172a;
+            background: #050508;
+            color: #00ff66; /* Klassik xakerlar yashil rangi */
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
         }
 
-        .container{
-            width: 400px;
-            background: #1e293b;
+        /* CRT monitor chiziqlari effekti (Eski terminallar kabi) */
+        body::before {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 100;
+            background-size: 100% 4px, 6px 100%;
+            pointer-events: none;
+        }
+
+        /* Matrix uslubidagi ohista fon nuri */
+        .terminal-glow {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: rgba(0, 255, 102, 0.03);
+            filter: blur(120px);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        /* ================= TERMINAL OYNASI ================= */
+        .terminal-window {
+            width: 500px;
+            background: #0a0a0f;
+            border: 1px solid #00ff66;
+            border-radius: 8px;
+            box-shadow: 0 0 30px rgba(0, 255, 102, 0.15);
+            overflow: hidden;
+            animation: bootUp 0.4s ease-out;
+        }
+
+        @keyframes bootUp {
+            from { opacity: 0; transform: scale(0.96) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        /* Terminal yuqori paneli */
+        .terminal-header {
+            background: #11111a;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 255, 10 green, 0.2);
+            border-bottom: 1px solid #00ff6633;
+        }
+
+        .terminal-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        /* Uchta rangli nuqtachalar */
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #222;
+        }
+        .dot-red { background: #ff5f56; }
+        .dot-yellow { background: #ffbd2e; }
+        .dot-green { background: #27c93f; }
+
+        .terminal-title {
+            font-size: 11px;
+            color: rgba(0, 255, 102, 0.6);
+            letter-spacing: 1px;
+        }
+
+        /* Terminal ichki qismi */
+        .terminal-body {
             padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.4);
         }
 
-        h1{
-            text-align: center;
-            color: white;
+        /* Matn yozilish effekti uchun */
+        .typing-text {
+            font-size: 14px;
             margin-bottom: 25px;
-        }
-
-        .form-input{
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 2px solid #00ff66;
             width: 100%;
-            padding: 12px;
-            margin-bottom: 15px;
-            border: none;
-            outline: none;
-            border-radius: 8px;
-            background: #334155;
-            color: white;
+            animation: typing 2s steps(30, end), blink 0.75s step-end infinite;
         }
 
-        textarea.form-input{
-            resize: none;
-            height: 100px;
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        @keyframes blink {
+            from, to { border-color: transparent }
+            50% { border-color: #00ff66; }
         }
 
-        button{
-            width: 100%;
-            padding: 12px;
-            border: none;
-            border-radius: 8px;
-            background: #3b82f6;
-            color: white;
+        /* ================= INPUTLAR (MINIMAL TERMINAL STYLE) ================= */
+        .input-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 12px;
+            text-transform: uppercase;
+            color: rgba(0, 255, 102, 0.7);
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        /* Prefiks belgisi ( > ) */
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-wrapper::before {
+            content: ">";
+            position: absolute;
+            left: 0;
+            color: #00ff66;
             font-size: 16px;
+        }
+
+        /* Django formasi elementlari uchun maxsus terminal stil */
+        .input-wrapper input,
+        .input-wrapper textarea {
+            width: 100%;
+            padding: 10px 10px 10px 20px;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid rgba(0, 255, 102, 0.3);
+            outline: none;
+            color: #ffffff;
+            font-size: 15px;
+            transition: all 0.3s;
+        }
+
+        .input-wrapper textarea {
+            resize: none;
+            height: 80px;
+            border-bottom: 1px solid rgba(0, 255, 102, 0.3);
+        }
+
+        /* Fokus bo'lganda tagidagi chiziq kuchayadi */
+        .input-wrapper input:focus,
+        .input-wrapper textarea:focus {
+            border-bottom-color: #00ff66;
+            box-shadow: 0 4px 12px rgba(0, 255, 102, 0.05);
+        }
+
+        /* ================= SUBMIT BUTTON ================= */
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: transparent;
+            border: 1px solid #00ff66;
+            color: #00ff66;
+            font-size: 14px;
+            font-weight: 700;
             cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            position: relative;
+        }
+
+        .submit-btn:hover {
+            background: #00ff66;
+            color: #050508;
+            box-shadow: 0 0 20px rgba(0, 255, 102, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: scale(0.99);
+        }
+
+        /* Orqaga qaytish havolasi */
+        .abort-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 11px;
+            color: rgba(255, 0, 85, 0.6); /* Rad etish qizil rangda */
+            text-decoration: none;
+            letter-spacing: 1px;
             transition: 0.3s;
         }
 
-        button:hover{
-            background: #2563eb;
+        .abort-link:hover {
+            color: #ff0055;
+            text-shadow: 0 0 8px rgba(255, 0, 85, 0.4);
         }
-
-        .back{
-            display: block;
-            text-align: center;
-            margin-top: 15px;
-            color: #cbd5e1;
-            text-decoration: none;
-        }
-
     </style>
-
 </head>
 <body>
 
-    <div class="container">
+    <div class="terminal-glow"></div>
 
-        <h1>Update Profile</h1>
+    <!-- TERMINAL OYNASI -->
+    <div class="terminal-window">
+        
+        <!-- Oyna paneli -->
+        <div class="terminal-header">
+            <div class="terminal-buttons">
+                <span class="dot dot-red"></span>
+                <span class="dot dot-yellow"></span>
+                <span class="dot dot-green"></span>
+            </div>
+            <div class="terminal-title">SYS://UPDATE_PROFILE.EXE</div>
+        </div>
 
-        <form method="POST">
+        <!-- Oyna korpusi -->
+        <div class="terminal-body">
+            
+            <!-- Kompyuter yozuv effekti -->
+            <div class="typing-text">Connecting secure core... Ready.</div>
 
-            {% csrf_token %}
+            <form method="POST" id="coreForm">
+                {% csrf_token %}
 
-            {{ form.last_name }}
-            {{ form.bio }}
-            {{ form.website }}
+                <div class="input-group">
+                    <label>root@user/bio_data_</label>
+                    <div class="input-wrapper">
+                        {{ form.bio }}
+                    </div>
+                </div>
 
-            <button type="submit">
-                Update Profile
-            </button>
+                <div class="input-group">
+                    <label>root@user/web_url_</label>
+                    <div class="input-wrapper">
+                        {{ form.website }}
+                    </div>
+                </div>
 
-        </form>
+                <button type="submit" class="submit-btn" id="subBtn">
+                    [ EXECUTE UPDATE ]
+                </button>
+            </form>
 
-        <a href="{% url 'profile_detail' profile.id %}" class="back">
-            Back
-        </a>
+            <a href="{% url 'user_list' %}" class="abort-link">
+                <!- ESC: ABORT_PROCESS ->
+            </a>
 
+        </div>
     </div>
+
+    <!-- JS: Tugma bosilganda yuklanish jarayonini imitatsiya qilish -->
+    <script>
+        document.getElementById("coreForm").addEventListener("submit", function() {
+            const btn = document.getElementById("subBtn");
+            btn.innerText = "[ SAVING TO CORE... ]";
+            btn.style.background = "rgba(0, 255, 102, 0.1)";
+            btn.style.pointerEvents = "none";
+        });
+    </script>
 
 </body>
 </html>

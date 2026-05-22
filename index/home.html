@@ -21,6 +21,7 @@ body{
     overflow:hidden;
     color:white;
     background:#05060a;
+    position: relative;
 }
 
 /* 🌌 Aurora animated background */
@@ -34,6 +35,7 @@ body::before{
                 radial-gradient(circle at 50% 80%, #7c3aed33, transparent 40%);
     filter: blur(60px);
     animation: aurora 10s infinite alternate;
+    z-index: 0;
 }
 
 @keyframes aurora{
@@ -50,11 +52,12 @@ body::before{
     border-radius:50%;
     opacity:0.3;
     animation: floatUp 6s infinite linear;
+    z-index: 1;
 }
 
 @keyframes floatUp{
-    from{transform:translateY(100vh); opacity:0;}
-    to{transform:translateY(-20vh); opacity:1;}
+    from{transform:translateY(110vh); opacity:0;}
+    to{transform:translateY(-10vh); opacity:1;}
 }
 
 /* 🧊 glass cyber card */
@@ -62,20 +65,16 @@ body::before{
     width:480px;
     padding:55px;
     border-radius:25px;
-
     background:rgba(255,255,255,0.05);
     backdrop-filter: blur(25px);
-
+    -webkit-backdrop-filter: blur(25px); /* Safari support */
     border:1px solid rgba(255,255,255,0.12);
-
     text-align:center;
     position:relative;
-    z-index:2;
-
+    z-index: 2;
     box-shadow:
         0 0 40px rgba(0,245,255,0.2),
         0 0 80px rgba(255,0,255,0.1);
-
     animation: appear 1s ease;
 }
 
@@ -91,16 +90,15 @@ body::before{
     inset:0;
     border-radius:25px;
     padding:2px;
-
     background:linear-gradient(90deg,#00f5ff,#ff00ff,#7c3aed,#00f5ff);
     background-size:300% 300%;
     animation: borderMove 6s linear infinite;
-
     -webkit-mask:
         linear-gradient(#000 0 0) content-box,
         linear-gradient(#000 0 0);
-    -webkit-mask-composite:xor;
-            mask-composite:exclude;
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+    pointer-events: none;
 }
 
 @keyframes borderMove{
@@ -114,7 +112,7 @@ h1{
     letter-spacing:2px;
     position:relative;
     text-transform:uppercase;
-
+    display: inline-block;
     background:linear-gradient(90deg,#00f5ff,#ff00ff,#7c3aed);
     -webkit-background-clip:text;
     -webkit-text-fill-color:transparent;
@@ -124,34 +122,39 @@ h1::before,
 h1::after{
     content:"WELCOME";
     position:absolute;
+    top: 0;
     left:0;
     width:100%;
+    height: 100%;
+    background: #05060a; /* Matches body background to hide layered text cuts */
     overflow:hidden;
 }
 
 h1::before{
-    color:#00f5ff;
+    -webkit-text-fill-color: #00f5ff;
+    clip-path: inset(0 0 50% 0); /* Top half glitch */
     animation: glitch1 2s infinite linear;
 }
 
 h1::after{
-    color:#ff00ff;
+    -webkit-text-fill-color: #ff00ff;
+    clip-path: inset(50% 0 0 0); /* Bottom half glitch */
     animation: glitch2 2s infinite linear;
 }
 
 @keyframes glitch1{
     0%{transform:translate(0,0);}
-    20%{transform:translate(-2px,2px);}
-    40%{transform:translate(2px,-2px);}
-    60%{transform:translate(-1px,1px);}
+    20%{transform:translate(-3px, 1px);}
+    40%{transform:translate(2px,-1px);}
+    60%{transform:translate(-1px, 2px);}
     100%{transform:translate(0,0);}
 }
 
 @keyframes glitch2{
     0%{transform:translate(0,0);}
-    20%{transform:translate(2px,-2px);}
-    40%{transform:translate(-2px,2px);}
-    60%{transform:translate(1px,-1px);}
+    20%{transform:translate(3px,-1px);}
+    40%{transform:translate(-2px, 1px);}
+    60%{transform:translate(1px,-2px);}
     100%{transform:translate(0,0);}
 }
 
@@ -192,10 +195,11 @@ a::after{
     height:100%;
     background:linear-gradient(120deg,transparent,rgba(255,255,255,0.3),transparent);
     transform:skewX(-20deg);
+    transition: none;
 }
 
 a:hover::after{
-    animation: shine 0.7s;
+    animation: shine 0.7s forwards;
 }
 
 @keyframes shine{
@@ -215,10 +219,14 @@ a:hover{
 body::after{
     content:"";
     position:absolute;
+    top: 0;
+    left: 0;
     width:100%;
     height:100%;
     background:linear-gradient(to bottom, transparent, rgba(255,255,255,0.03), transparent);
     animation: scan 6s linear infinite;
+    pointer-events: none; /* Stops it blocking button clicks */
+    z-index: 3;
 }
 
 @keyframes scan{
@@ -230,39 +238,37 @@ body::after{
 
 <body>
 
-<!-- floating particles -->
-<script>
-for(let i=0;i<25;i++){
-    let p = document.createElement("div");
-    p.className = "particle";
-    p.style.left = Math.random()*100 + "vw";
-    p.style.animationDuration = (3 + Math.random()*5) + "s";
-    document.body.appendChild(p);
-}
-</script>
-
 <div class="box">
-
     <h1>WELCOME</h1>
     <p>Neural Authentication Interface</p>
 
     {% if user.is_authenticated %}
         <p style="color:#00f5ff;">Hello, <b>{{ user.first_name }}</b></p>
-
         <div class="btns">
             <a class="logout" href="{% url 'logout' %}">Logout</a>
         </div>
-
     {% else %}
         <p>You are offline</p>
-
         <div class="btns">
             <a class="login" href="{% url 'login' %}">Login</a>
             <a class="register" href="{% url 'register_view' %}">Register</a>
         </div>
     {% endif %}
-
 </div>
+
+<!-- Scripts placed safely at the bottom of body execution -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    for(let i=0; i<25; i++){
+        let p = document.createElement("div");
+        p.className = "particle";
+        p.style.left = Math.random()*100 + "vw";
+        p.style.animationDuration = (3 + Math.random()*5) + "s";
+        p.style.animationDelay = Math.random()*5 + "s";
+        document.body.appendChild(p);
+    }
+});
+</script>
 
 </body>
 </html>
