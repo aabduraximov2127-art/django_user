@@ -78,32 +78,36 @@ class LoginForm(AuthenticationForm):
     )
 # profile
 
-class UserProfileForm(forms.ModelForm):
-    class Meta:
-        model = models.UserProfile
-        fields = [
-            'bio',
-            'website',
-        ]
 class ProfileUpdateForm(forms.ModelForm):
+
+    first_name = forms.CharField(
+        max_length=100,
+        widget=forms.TextInput(attrs={'class': 'form-input','placeholder': ' Ismingizni kiriting'}))
+    last_name = forms.CharField(
+        max_length=100,
+        widget=forms.TextInput(attrs={'class': 'form-input','placeholder': ' Familiyangizni kiriting'}))
+    phon = forms.CharField(
+        max_length=20,
+        widget=forms.TextInput(attrs={'class': 'form-input','placeholder': ' Telefon raqamingizni kiriting'}))
+    avatar = forms.ImageField(
+        widget=forms.FileInput(attrs={'class': 'form-input','placeholder': ' Rasm yuklang'}))
+    email= forms.EmailField(
+        widget=forms.EmailInput(attrs={'class': 'form-input','placeholder': ' Email kiriting'}))
+    bio=forms.CharField(widget=forms.Textarea(attrs={'class': 'form-input','placeholder': ' O\'z hususiyatlaringizni yozing'}))
+    
+    website=forms.URLField(widget=forms.URLInput(attrs={'class': 'form-input','placeholder': ' Vebsaytingizni kiriting'}))
+    
     class Meta:
         model = models.UserProfile
         fields = [
+            'last_name',
             'bio',
             'website',
         ]
-
-        
-
+    
 class ProfileDeleteForm(forms.ModelForm):
     class Meta:
         model = models.UserProfile
         fields = []
         
-class UserProfileForm(forms.ModelForm):
-    class Meta:
-        model = models.UserProfile
-        fields = [
-            'bio',
-            'website',
-        ]
+

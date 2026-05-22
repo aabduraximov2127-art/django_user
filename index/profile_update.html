@@ -3,18 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+
+    <title>Update Profile</title>
+
+    <style>
+
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body{
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #0f172a;
+        }
+
+        .container{
+            width: 400px;
+            background: #1e293b;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.4);
+        }
+
+        h1{
+            text-align: center;
+            color: white;
+            margin-bottom: 25px;
+        }
+
+        .form-input{
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: none;
+            outline: none;
+            border-radius: 8px;
+            background: #334155;
+            color: white;
+        }
+
+        textarea.form-input{
+            resize: none;
+            height: 100px;
+        }
+
+        button{
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: #3b82f6;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover{
+            background: #2563eb;
+        }
+
+        .back{
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: #cbd5e1;
+            text-decoration: none;
+        }
+
+    </style>
+
 </head>
 <body>
-    <h1>Profile</h1>
-    <p>Bio: {{profile.bio}}</p>
-    <p>Website: {{profile.website}}</p>
-    
-    <div class="actions">
-        
-        
-        <a href="{% url 'user_list' %}">Back to List</a>
+
+    <div class="container">
+
+        <h1>Update Profile</h1>
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            {{ form.last_name }}
+            {{ form.bio }}
+            {{ form.website }}
+
+            <button type="submit">
+                Update Profile
+            </button>
+
+        </form>
+
+        <a href="{% url 'profile_detail' profile.id %}" class="back">
+            Back
+        </a>
+
     </div>
-    
+
 </body>
 </html>

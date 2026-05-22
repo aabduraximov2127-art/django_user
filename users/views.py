@@ -7,8 +7,9 @@ from django.contrib.auth import (
 )
 from unidecode import unidecode
 
-
-from .forms import UserForm, RegisterForm, LoginForm,UserProfileForm,ProfileUpdateForm,ProfileDeleteForm
+from . import models
+from .forms import UserForm, RegisterForm, LoginForm
+from .forms import ProfileUpdateForm, ProfileDeleteForm
 from django.contrib.auth.decorators import login_required
 
 User = get_user_model()
@@ -139,37 +140,26 @@ def logout_view(request):
     logout(request)
     return redirect("login")
 
-# @login_required
-def profile_view(request, id):
-    user = get_object_or_404(UserProfileForm, id=id)
-    profile = user.userprofile
+# User Profile Views
+def profile(request, slug):
+    profile = get_object_or_404(models.ControlUsers, slug=slug)
+    return render(request, "profile.html", {"profile": profile})
 
-    return render(request, "profile.html", {
-        "user": user,
-        "profile": profile
-    })
-    
-def profile_update(request, id):
-    user = get_object_or_404(ProfileUpdateForm, id=id)
-    profile = user.userprofile
+def profile_update(request, slug):
+    profile = get_object_or_404(models.ControlUsers, slug=slug)
 
     if request.method == "POST":
-        form = ProfileUpdateForm(request.POST, instance=profile)
-
+        form = ProfileUpdateForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
             form.save()
-            return redirect("user_list")
-
+            return redirect("user_list", slug=profile.slug)
     else:
         form = ProfileUpdateForm(instance=profile)
 
-    return render(request, "profile_update.html", {
-        "form": form
-    })
+    return render(request, "profile_update.html", {"form": form})
 
-def profile_delete(request, id):
-
-    profile = get_object_or_404(ProfileDeleteForm, id=id)
+def profile_delete(request, slug):
+    profile = get_object_or_404(models.ControlUsers, slug=slug)
 
     if request.method == "POST":
         profile.delete()
