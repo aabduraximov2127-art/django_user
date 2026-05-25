@@ -13,3 +13,12 @@ class UserAdmin(admin.ModelAdmin):
     list_per_page=15
 
 admin.site.register(models.UserProfile)
+
+admin.site.register(models.Post)
+class PostAdminn(admin.ModelAdmin):
+    list_display=('title','author','craeted_at')
+    list_display_links=('title',)
+    search_fields=('title','content' )
+    readonly_fields=('slug',)
+    list_filter=('author',)
+    list_per_page=15

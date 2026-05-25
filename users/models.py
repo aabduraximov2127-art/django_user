@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.utils.text import slugify
 import uuid
+from django.urls import reverse
 
 
 class CustomUserManager(BaseUserManager):
@@ -76,4 +77,26 @@ def save_user_profile(sender, instance, **kwargs):
     instance.userprofile.save()
 
 
+class Post(models.Model):
+    author = models.ForeignKey(ControlUsers, on_delete=models.CASCADE, related_name='posts')
+    title = models.CharField(max_length=150)
+    content = models.TextField()
+    images=models.ImageField(upload_to="post_images/", blank=True, null=True)
+    craeted_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    slug = models.SlugField(unique=True, blank=True)
+
+    class Meta:
+        ordering = ['-craeted_at']
     
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(f"{self.title}-{str(uuid.uuid4())[:4]}")
+        super().save(*args, **kwargs)
+    
+    def get_absolute_url(self):
+        return reverse("post_detail", kwargs={"slug": self.slug})
+    
+
+    def __str__(self):
+        return f"{self.title}--{self.author.email}"

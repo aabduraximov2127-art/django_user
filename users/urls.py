@@ -18,4 +18,9 @@ urlpatterns = [
     path('profile/update/<slug:slug>/', views.profile_update, name='profile_update'),
     path('profile/delete/<slug:slug>/', views.profile_delete, name='profile_delete'),
     path('userprofile/update/<slug:slug>/', views.userprofile_update, name='userprofile_update'),
+    path('posts/', views.post_list, name='post_list'),
+    path('posts/create/', views.post_create, name='post_create'),
+    path('posts/<slug:slug>/', views.post_detail, name='post_detail'),
+    path('posts/<slug:slug>/update/', views.post_update, name='post_update'),
+    path('posts/<slug:slug>/delete/', views.post_delete, name='post_delete'),
 ]

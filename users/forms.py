@@ -122,3 +122,41 @@ class ProfileUpdateForm(forms.ModelForm):
             'bio',
             'website',
         ]
+        
+class PostCreateForm(forms.ModelForm):
+    title=forms.CharField(max_length=200)
+    content=forms.CharField(widget=forms.Textarea)
+    images=forms.ImageField(widget=forms.FileInput)
+    class Meta:
+        model = models.Post
+        fields = [
+            'title',
+            'content',
+            'images',
+        ]
+        
+class PostUpdateForm(forms.ModelForm):
+    title=forms.CharField(max_length=200, widget=forms.TextInput(attrs={'class': 'form-input','placeholder': ' Post sarlavhasini kiriting'}))
+    content=forms.CharField(widget=forms.Textarea(attrs={'class': 'form-input','placeholder': ' Post mazmunini kiriting'}))
+    images=forms.ImageField(widget=forms.FileInput(attrs={'class': 'form-input','placeholder':
+        ' Post uchun rasm yuklang'}))
+    
+    class Meta:
+        model = models.Post
+        fields = [
+            'title',
+            'content',
+            'images',
+        ]
+class PostDeleteForm(forms.ModelForm):
+    class Meta:
+        model = models.Post
+        fields = []
+class PostDetailForm(forms.ModelForm):
+    class Meta:
+        model = models.Post
+        fields = [
+            'title',
+            'content',
+            'images',
+        ]

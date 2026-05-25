@@ -7,13 +7,17 @@ from django.contrib.auth import (
 )
 from unidecode import unidecode
 
-from . import models
-from .forms import UserForm, RegisterForm, LoginForm
-from .forms import ProfileUpdateForm, ProfileDeleteForm,UserProfileUpdateForm
+from . import models 
+from .forms import UserForm, RegisterForm, LoginForm, UserProfileUpdateForm, ProfileUpdateForm
+from .models import Post
+
+
+ 
 from django.contrib.auth.decorators import login_required
 
-User = get_user_model()
 
+User = get_user_model()
+# users information
 def user_list(request):
     users = User.objects.all()
     query = request.GET.get("q")
@@ -96,12 +100,12 @@ def user_delete(request, id):
     return render(request, "user_delete.html", {"user": user})
 
 
-def user_detail(request, slug):
-
+def user_detail(request,slug):
     user = get_object_or_404(User, slug=slug)
-
     return render(request, "user_detail.html", {"user": user})
 
+
+# registration, login, logout
 def register_view(request):
     if request.method == "POST":
         form = RegisterForm(request.POST, request.FILES)
@@ -138,7 +142,10 @@ def login(request):
 
 def logout_view(request):
     logout(request)
-    return redirect("login")
+    return redirect("home")
+# <-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-->->->->->->->->->->->->->->->->->->->->->->->->->->->->->
+
+
 
 # User Profile Views
 def profile(request, slug):
@@ -180,4 +187,54 @@ def profile_update(request, slug):
 
     return render(request, "profile_update.html", {"form": form})
 
+
+# <--------------------------------------------->
+# posts
+from .forms import PostUpdateForm,PostDeleteForm,PostDetailForm,PostCreateForm
+
+
+def post_list(request):
+    posts = Post.objects.select_related('author').all()
+    return render(request, "post_list.html", {"posts": posts})
+
+def post_detail(request, slug):
+    post = get_object_or_404(models.Post, slug=slug)
+    return render(request, "post_detail.html", {"post": post})
+
+@login_required
+def post_create(request):
+    if request.method == "POST":
+        form = PostCreateForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.save()
+            return redirect("post_list")
+
+    else:
+        form = PostCreateForm()
+
+    return render(request, "post_create.html", {"form": form})
+
+
+def post_update(request, slug): 
+    post = get_object_or_404(models.Post, slug=slug)
+
+    if request.method == "POST":
+        form = PostUpdateForm(request.POST, request.FILES, instance=post)
+        if form.is_valid():
+            form.save()
+            return redirect("post_detail", slug=post.slug)
+    else:
+        form = PostUpdateForm(instance=post)
+
+    return render(request, "post_update.html", {"form": form})
+
+def post_delete(request, slug):
+    post = get_object_or_404(models.Post, slug=slug)
+    if request.method == "POST":
+        post.delete()
+        return redirect("post_list")
+    return render(request, "post_delete.html", {"post": post})
 

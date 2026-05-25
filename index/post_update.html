@@ -1,0 +1,401 @@
+{% block title %}Tahrirlash: {{ post.title }}{% endblock %}
+
+{% block extra_css %}
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Syne:wght@500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+  :root {
+    --bg-dark: #030307;
+    --warning-neon: #ffb703;
+    --warning-glow: rgba(255, 183, 3, 0.2);
+    --primary-neon: #00f2fe;
+    --danger-neon: #ff0055;
+    --text-white: #ffffff;
+    --text-gray: #8e92a6;
+  }
+
+  body {
+    background-color: var(--bg-dark);
+    font-family: 'Outfit', sans-serif;
+    color: var(--text-white);
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* --- Orqa fondagi harakatlanuvchi Canvas --- */
+  #bg-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  /* --- Orqaga qaytish tugmasi --- */
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--text-gray);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 3rem;
+    padding: 0.5rem 1rem;
+    border-radius: 30px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  .back-link i { transition: transform 0.3s; }
+  .back-link:hover {
+    color: var(--warning-neon);
+    border-color: rgba(255, 183, 3, 0.3);
+    background: rgba(255, 183, 3, 0.05);
+    box-shadow: 0 0 15px rgba(255, 183, 3, 0.1);
+  }
+  .back-link:hover i { transform: translateX(-5px); }
+
+  /* --- Forma Sarlavhasi (Cyber Gold Style) --- */
+  .form-header {
+    margin-bottom: 3.5rem;
+    position: relative;
+    animation: fadeInDown 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .form-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 3.5rem;
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    background: linear-gradient(135deg, #ffffff 30%, #ffd166 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .form-subtitle {
+    color: var(--warning-neon);
+    font-size: 0.95rem;
+    font-weight: 500;
+    margin-top: 0.6rem;
+    display: inline-block;
+    background: rgba(255, 183, 3, 0.1);
+    border: 1px solid rgba(255, 183, 3, 0.2);
+    padding: 0.3rem 0.8rem;
+    border-radius: 8px;
+    word-break: break-all;
+  }
+
+  /* --- Cyberpunk Form Card --- */
+  .form-card {
+    background: rgba(10, 10, 15, 0.5);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 183, 3, 0.1);
+    border-radius: 24px;
+    padding: 3.5rem;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4), 0 0 40px rgba(255, 183, 3, 0.02);
+    position: relative;
+    overflow: hidden;
+    animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  /* --- Django Inputs Styling --- */
+  .field {
+    margin-bottom: 2.2rem;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  .field label {
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-white);
+    margin-bottom: 0.8rem;
+    transition: color 0.3s;
+  }
+
+  /* Input va boshqa maydonlarni tahrirlash */
+  .field input[type="text"],
+  .field input[type="number"],
+  .field input[type="email"],
+  .field input[type="url"],
+  .field input[type="password"],
+  .field textarea,
+  .field select {
+    width: 100%;
+    padding: 1.1rem 1.5rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    color: var(--text-white);
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.05rem;
+    outline: none;
+    box-sizing: border-box;
+    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  .field textarea {
+    min-height: 180px;
+    resize: vertical;
+  }
+
+  /* Input Oltin rangli neon effektga kirishi */
+  .field input:focus,
+  .field textarea:focus,
+  .field select:focus {
+    border-color: var(--warning-neon);
+    background: rgba(255, 183, 3, 0.01);
+    box-shadow: 0 0 25px rgba(255, 183, 3, 0.15), inset 0 0 10px rgba(255, 183, 3, 0.03);
+  }
+
+  .field:focus-within label {
+    color: var(--warning-neon);
+  }
+
+  .helptext {
+    font-size: 0.8rem;
+    color: var(--text-gray);
+    margin-top: 0.5rem;
+    font-style: italic;
+  }
+
+  /* --- Error States --- */
+  .errorlist {
+    list-style: none;
+    padding: 0;
+    margin: 0.6rem 0 0 0;
+  }
+
+  .errorlist li {
+    font-size: 0.85rem;
+    color: var(--danger-neon);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .errorlist li::before {
+    content: '\f06a';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+  }
+
+  .field:has(.errorlist) input,
+  .field:has(.errorlist) textarea {
+    border-color: var(--danger-neon);
+    box-shadow: 0 0 15px rgba(255, 0, 85, 0.1);
+  }
+
+  /* --- Form Actions & Buttons --- */
+  .form-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+
+  .magnet-btn-wrap {
+    display: inline-block;
+    transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  /* Yangilash Oltin neon tugmasi */
+  .btn-cyber-update {
+    position: relative;
+    padding: 1.2rem 3rem;
+    background: linear-gradient(90deg, var(--warning-neon), #f39c12);
+    border: none;
+    border-radius: 50px;
+    color: var(--bg-dark);
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    box-shadow: 0 0 30px rgba(255, 183, 3, 0.3);
+    transition: all 0.3s;
+  }
+
+  .btn-cyber-update:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 40px rgba(255, 183, 3, 0.5);
+  }
+
+  /* Bekor Qilish */
+  .btn-cyber-outline {
+    padding: 1.1rem 2.5rem;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50px;
+    color: var(--text-gray);
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    transition: all 0.3s;
+  }
+
+  .btn-cyber-outline:hover {
+    border-color: rgba(255, 255, 255, 0.3);
+    color: var(--text-white);
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  /* --- Animatsiyalar --- */
+  @keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Responsive */
+  @media(max-width: 768px) {
+    .form-card { padding: 2rem; }
+    .form-label { font-size: 2.5rem; }
+    .form-actions { flex-direction: column; align-items: stretch; }
+    .btn-cyber-update, .btn-cyber-outline { justify-content: center; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<canvas id="bg-canvas"></canvas>
+
+<a href="{% url 'post_list' %}" class="back-link">
+  <i class="fa-solid fa-arrow-left-long"></i> Bekor qilish
+</a>
+
+<div class="form-header">
+  <h1 class="form-label">Postni tahrirlash</h1>
+  <div class="form-subtitle">
+    <i class="fa-solid fa-pen-to-square"></i> Modifikatsiya: {{ post.title }}
+  </div>
+</div>
+
+<div class="form-card">
+  <form method="POST" enctype="multipart/form-data" novalidate>
+    {% csrf_token %}
+
+    {% for field in form %}
+      <div class="field">
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+        
+        {% if field.help_text %}
+          <div class="helptext">{{ field.help_text }}</div>
+        {% endif %}
+        
+        {% if field.errors %}
+          <ul class="errorlist">
+            {% for error in field.errors %}
+              <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+    {% endfor %}
+
+    <div class="form-actions">
+      <div class="magnet-btn-wrap">
+        <button type="submit" class="btn-cyber-update">
+          <i class="fa-solid fa-rotate"></i> Yangilash
+        </button>
+      </div>
+      <a href="{% url 'post_list' %}" class="btn-cyber-outline">Bekor qilish</a>
+    </div>
+  </form>
+</div>
+
+<script>
+  // 1. CANVAS PARTICLE BACKGROUND (Tahrirlash muhitiga mos oltin/sariq neon zarrachalar)
+  const canvas = document.getElementById('bg-canvas');
+  const ctx = canvas.getContext('2d');
+
+  let particles = [];
+  const particleCount = 40;
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+
+  class Particle {
+    constructor() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      this.size = Math.random() * 1.8 + 0.5;
+      this.speedX = Math.random() * 0.4 - 0.2;
+      this.speedY = Math.random() * -0.4 - 0.05;
+      this.opacity = Math.random() * 0.4 + 0.1;
+    }
+    update() {
+      this.x += this.speedX;
+      this.y += this.speedY;
+      if (this.y < 0) {
+        this.y = canvas.height;
+        this.x = Math.random() * canvas.width;
+      }
+    }
+    draw() {
+      ctx.fillStyle = `rgba(255, 183, 3, ${this.opacity})`;
+      ctx.shadowBlur = 8;
+      ctx.shadowColor = '#ffb703';
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  for (let i = 0; i < particleCount; i++) {
+    particles.push(new Particle());
+  }
+
+  function animateParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.shadowBlur = 0;
+    particles.forEach(p => {
+      p.update();
+      p.draw();
+    });
+    requestAnimationFrame(animateParticles);
+  }
+  animateParticles();
+
+  // 2. MAGNETIC BUTTON EFFECT
+  const magnetWrap = document.querySelector('.magnet-btn-wrap');
+  if(magnetWrap) {
+    magnetWrap.addEventListener('mousemove', (e) => {
+      const box = magnetWrap.getBoundingClientRect();
+      const cx = box.left + box.width / 2;
+      const cy = box.top + box.height / 2;
+      const mx = (e.clientX - cx) * 0.3;
+      const my = (e.clientY - cy) * 0.3;
+      magnetWrap.style.transform = `translate(${mx}px, ${my}px)`;
+    });
+    
+    magnetWrap.addEventListener('mouseleave', () => {
+      magnetWrap.style.transform = 'translate(0px, 0px)';
+    });
+  }
+</script>
+{% endblock %}
